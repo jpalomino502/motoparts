@@ -35,17 +35,6 @@ export default function Header({ setIsMenuOpen, categories }) {
                 Ofertas
               </Link>
 
-              {/* Nuevo botón de Productos */}
-              <Link
-                to="/products" // Enlace directo a la página de productos
-                onClick={() => setActiveLink('productos')}
-                className={`px-3 py-2 text-sm font-medium ${
-                  activeLink === 'productos' ? 'active-link' : 'text-gray-600 hover:text-[#201c1c] hover-link'
-                }`}
-              >
-                Productos
-              </Link>
-
               {/* Otros enlaces */}
               <button
                 onClick={() => setActiveLink('favoritos')}
@@ -92,7 +81,6 @@ export default function Header({ setIsMenuOpen, categories }) {
               )}
             </nav>
 
-            {/* Mobile Menu Button */}
             <button
               className="md:hidden p-2 rounded-full text-gray-600 hover:text-[#201c1c]"
               onClick={() => setIsMenuOpen(prev => !prev)}
@@ -103,7 +91,6 @@ export default function Header({ setIsMenuOpen, categories }) {
         </div>
       </header>
 
-      {/* Login Modal */}
       <LoginModal isOpen={isLoginModalOpen} onClose={() => setLoginModalOpen(false)} />
     </>
   );

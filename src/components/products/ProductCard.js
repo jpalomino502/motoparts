@@ -31,8 +31,11 @@ export default function ProductCard({ product }) {
         </div>
       </div>
       <div className="p-4 pt-0">
-        <button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md flex items-center justify-center">
+        <button className="w-full bg-[#201c1c] hover:bg-gray-800 text-white py-2 px-4 rounded-md flex items-center justify-center mb-2">
           <ShoppingCart className="mr-2 h-4 w-4" /> Agregar al Carrito
+        </button>
+        <button className="w-full bg-gray-600 hover:bg-gray-700 text-white py-2 px-4 rounded-md flex items-center justify-center">
+          <Star className="mr-2 h-4 w-4" /> Agregar a Favoritos
         </button>
       </div>
     </div>

@@ -11,7 +11,7 @@ export default function Newsletter() {
           />
           <button
             type="submit"
-            className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors font-medium"
+            className="bg-[#201c1c] text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors font-medium"
           >
             Suscribirse
           </button>

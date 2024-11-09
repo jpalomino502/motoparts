@@ -5,7 +5,6 @@ import { categories, brands } from './data';
 export default function FilterContent({ priceRange, setPriceRange, searchTerm, setSearchTerm, showDiscounts, setShowDiscounts }) {
   return (
     <div className="space-y-6">
-      {/* Búsqueda */}
       <div>
         <label htmlFor="search" className="block text-sm font-medium text-gray-700">Buscar</label>
         <div className="relative mt-1">
@@ -14,14 +13,13 @@ export default function FilterContent({ priceRange, setPriceRange, searchTerm, s
             type="text"
             id="search"
             placeholder="Buscar productos..."
-            className="pl-8 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+            className="pl-8 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#201c1c] focus:ring-[#201c1c]"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
       </div>
 
-      {/* Rango de precios */}
       <div>
         <label htmlFor="price-range" className="block text-sm font-medium text-gray-700">Rango de Precio</label>
         <input
@@ -43,7 +41,7 @@ export default function FilterContent({ priceRange, setPriceRange, searchTerm, s
       {/* Botón de descuentos */}
       <button
         onClick={() => setShowDiscounts(!showDiscounts)}
-        className={`w-full py-2 px-4 rounded-md ${showDiscounts ? 'bg-blue-600 text-white' : 'bg-white text-blue-600'}`}
+        className={`w-full py-2 px-4 rounded-md ${showDiscounts ? 'bg-[#201c1c] text-white' : 'bg-white text-[#201c1c ]'}`}
       >
         <Percent className="inline-block w-4 h-4 mr-2" />
         {showDiscounts ? "Mostrar todos los productos" : "Ver solo ofertas"}
@@ -51,7 +49,7 @@ export default function FilterContent({ priceRange, setPriceRange, searchTerm, s
 
       {/* Marcas */}
       <div>
-        <h3 className="font-semibold mb-2 text-blue-600">Marcas</h3>
+        <h3 className="font-semibold mb-2 text-[#201c1c]">Marcas</h3>
         {brands.map((brand) => (
           <div key={brand} className="flex items-center space-x-2 mb-2">
             <input type="checkbox" id={`brand-${brand}`} className="rounded text-blue-600 focus:ring-blue-500" />

@@ -29,17 +29,16 @@ export default function ProductPage() {
         <nav className="text-sm mb-6">
           <ol className="list-none p-0 inline-flex">
             <li className="flex items-center">
-              <a href="/" className="text-blue-600 hover:text-blue-800">Inicio</a>
+              <a href="/" className="text-[#201c1c] hover:text-blue-800">Inicio</a>
               <ChevronRight className="h-4 w-4 mx-2" />
             </li>
             <li className="flex items-center">
-              <a href="/products" className="text-blue-600 hover:text-blue-800">Productos</a>
+              <a href="/products" className="text-[#201c1c] hover:text-[#201c1c]">Productos</a>
             </li>
           </ol>
         </nav>
-        <h1 className="text-3xl font-bold mb-8 text-blue-600">Productos NKS</h1>
+        <h1 className="text-3xl font-bold mb-8 text-[#201c1c]">Productos NKS</h1>
         <div className="flex flex-col lg:flex-row gap-8">
-          {/* Sidebar de filtros en pantallas grandes */}
           <aside className="w-full lg:w-1/4 hidden lg:block">
             <FilterSidebar 
               priceRange={priceRange} 
@@ -55,7 +54,7 @@ export default function ProductPage() {
           <div className="lg:hidden mb-4">
             <button
               onClick={() => setShowFilters(!showFilters)}
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md flex items-center justify-center"
+              className="w-full bg-[#201c1c] hover:bg-blue-700 text-white py-2 px-4 rounded-md flex items-center justify-center"
             >
               {showFilters ? "Ocultar Filtros" : "Mostrar Filtros"}
             </button>

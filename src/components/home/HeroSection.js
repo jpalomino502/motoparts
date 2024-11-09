@@ -1,3 +1,5 @@
+import heroImage from '../../assets/hero.png';
+
 export default function HeroSection() {
   return (
     <div className="bg-gradient-to-r from-[#201c1c] to-[#201c1c] rounded-xl overflow-hidden shadow-xl mb-8">
@@ -9,9 +11,9 @@ export default function HeroSection() {
             Ver Productos 
           </button>
         </div>
-        {/* <div className="w-full md:w-1/2">
-          <img src="https://via.placeholder.com/300" alt="Ofertas de repuestos" className="rounded-lg shadow-lg" />
-        </div> */}
+        <div className="w-full md:w-1/2">
+          <img src={heroImage} alt="Ofertas de repuestos" />
+        </div>
       </div>
     </div>
   );
