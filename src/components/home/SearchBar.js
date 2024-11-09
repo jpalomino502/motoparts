@@ -6,11 +6,10 @@ export default function SearchBar() {
           {['Marca', 'Modelo', 'Cilindraje', 'Año', 'Línea de Producto'].map((label, index) => (
             <select key={index} className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
               <option value="">{label}</option>
-              {/* Example options omitted for brevity */}
             </select>
           ))}
         </div>
-        <button className="mt-4 w-full bg-[#201c1c] text-white py-2 px-4 rounded-md hover:bg-black-800 transition-colors">
+        <button className="mt-4 w-full bg-[#ff0000] text-[#fff0f0] py-2 px-4 rounded-md hover:bg-red-700 transition-colors">
           Buscar Repuestos
         </button>
       </div>

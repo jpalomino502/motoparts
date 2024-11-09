@@ -1,14 +1,37 @@
-import React, { useState } from 'react';
-import { ShoppingCart, Menu, Heart, User } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { ShoppingCart, Menu, Heart, User, Tag } from 'lucide-react'; // Agregado icono Tag
 import LoginModal from './LoginModal';
 import { useAuth } from '../../hooks/useAuth';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import logo from '../../assets/logo.png';
 
 export default function Header({ setIsMenuOpen, categories }) {
   const [isLoginModalOpen, setLoginModalOpen] = useState(false);
   const { user } = useAuth();
   const [activeLink, setActiveLink] = useState('');
+  const location = useLocation(); // hook para obtener la ubicación actual de la URL
+
+  // Actualiza el enlace activo según la ruta actual
+  useEffect(() => {
+    const path = location.pathname;
+    if (path.includes('products')) {
+      setActiveLink('productos');
+    } else if (path.includes('favorites')) {
+      setActiveLink('favoritos');
+    } else if (path.includes('cart')) {
+      setActiveLink('carrito');
+    } else if (path.includes('profile')) {
+      setActiveLink('perfil');
+    } else {
+      setActiveLink(''); // Si no coincide con ninguna, desactivar
+    }
+  }, [location]);
+
+  // Función para cerrar el modal y restablecer el estado activo
+  const handleModalClose = () => {
+    setLoginModalOpen(false);
+    setActiveLink(''); // Limpia el enlace activo al cerrar el modal
+  };
 
   return (
     <>
@@ -24,40 +47,42 @@ export default function Header({ setIsMenuOpen, categories }) {
 
             {/* Navigation Links */}
             <nav className="hidden md:flex items-center space-x-4">
-              {/* Botón de Ofertas con filtro de descuento */}
+              {/* Enlace de Productos con icono Tag */}
               <Link
-                to="/products?discount=true" // Enlace con filtro de descuento
-                onClick={() => setActiveLink('ofertas')}
-                className={`px-3 py-2 text-sm font-medium ${
-                  activeLink === 'ofertas' ? 'active-link' : 'text-gray-600 hover:text-[#201c1c] hover-link'
+                to="/products"
+                className={`px-3 py-2 text-sm font-medium flex items-center ${
+                  activeLink === 'productos' ? 'active-link' : 'text-gray-600 hover:text-[#201c1c] hover-link'
                 }`}
               >
-                Ofertas
+                <Tag className="h-4 w-4 mr-1" /> {/* Icono Tag */}
+                Productos
               </Link>
 
-              {/* Otros enlaces */}
-              <button
-                onClick={() => setActiveLink('favoritos')}
+              {/* Enlace de Favoritos */}
+              <Link
+                to="/favorites"
                 className={`px-3 py-2 text-sm font-medium flex items-center ${
                   activeLink === 'favoritos' ? 'active-link' : 'text-gray-600 hover:text-[#201c1c] hover-link'
                 }`}
               >
                 <Heart className="h-4 w-4 mr-1" />
                 Favoritos
-              </button>
-              <button
-                onClick={() => setActiveLink('carrito')}
+              </Link>
+
+              {/* Enlace al carrito */}
+              <Link
+                to="/cart"
                 className={`px-3 py-2 text-sm font-medium flex items-center ${
                   activeLink === 'carrito' ? 'active-link' : 'text-gray-600 hover:text-[#201c1c] hover-link'
                 }`}
               >
                 <ShoppingCart className="h-4 w-4 mr-1" />
                 Carrito
-              </button>
+              </Link>
+
               {user ? (
                 <Link
                   to="/profile"
-                  onClick={() => setActiveLink('perfil')}
                   className={`px-3 py-2 text-sm font-medium flex items-center ${
                     activeLink === 'perfil' ? 'active-link' : 'text-gray-600 hover:text-[#201c1c] hover-link'
                   }`}
@@ -81,6 +106,7 @@ export default function Header({ setIsMenuOpen, categories }) {
               )}
             </nav>
 
+            {/* Icono del menú móvil */}
             <button
               className="md:hidden p-2 rounded-full text-gray-600 hover:text-[#201c1c]"
               onClick={() => setIsMenuOpen(prev => !prev)}
@@ -91,7 +117,11 @@ export default function Header({ setIsMenuOpen, categories }) {
         </div>
       </header>
 
-      <LoginModal isOpen={isLoginModalOpen} onClose={() => setLoginModalOpen(false)} />
+      {/* Modal de inicio de sesión */}
+      <LoginModal
+        isOpen={isLoginModalOpen}
+        onClose={handleModalClose} // Pasa la función de cierre
+      />
     </>
   );
 }

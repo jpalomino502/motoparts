@@ -29,11 +29,11 @@ export default function ProductPage() {
         <nav className="text-sm mb-6">
           <ol className="list-none p-0 inline-flex">
             <li className="flex items-center">
-              <a href="/" className="text-[#201c1c] hover:text-blue-800">Inicio</a>
+              <a href="/" className="text-[#ff0000] hover:text-[#d70000]">Inicio</a>
               <ChevronRight className="h-4 w-4 mx-2" />
             </li>
             <li className="flex items-center">
-              <a href="/products" className="text-[#201c1c] hover:text-[#201c1c]">Productos</a>
+              <a href="/products" className="text-[#ff0000] hover:text-[#d70000]">Productos</a>
             </li>
           </ol>
         </nav>

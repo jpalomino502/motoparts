@@ -41,7 +41,7 @@ export default function FilterContent({ priceRange, setPriceRange, searchTerm, s
       {/* Botón de descuentos */}
       <button
         onClick={() => setShowDiscounts(!showDiscounts)}
-        className={`w-full py-2 px-4 rounded-md ${showDiscounts ? 'bg-[#201c1c] text-white' : 'bg-white text-[#201c1c ]'}`}
+        className={`w-full py-2 px-4 rounded-md ${showDiscounts ? 'bg-[#ff0000] text-white' : 'bg-white text-[#d70000 ]'}`}
       >
         <Percent className="inline-block w-4 h-4 mr-2" />
         {showDiscounts ? "Mostrar todos los productos" : "Ver solo ofertas"}
