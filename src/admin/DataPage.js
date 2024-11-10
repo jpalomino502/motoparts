@@ -97,7 +97,7 @@ export default function DataPage() {
             onClick={() => setActiveTab('brands')}
             className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
               activeTab === 'brands'
-                ? 'bg-white text-blue-600 shadow-sm'
+                ? 'bg-white text-[#500000] shadow-sm'
                 : 'text-gray-600 hover:text-gray-900'
             }`}
           >
@@ -107,7 +107,7 @@ export default function DataPage() {
             onClick={() => setActiveTab('categories')}
             className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
               activeTab === 'categories'
-                ? 'bg-white text-blue-600 shadow-sm'
+                ? 'bg-white text-[#500000] shadow-sm'
                 : 'text-gray-600 hover:text-gray-900'
             }`}
           >
@@ -127,7 +127,7 @@ export default function DataPage() {
           />
           <button
             type="submit"
-            className="px-4 py-2 bg-blue-600 text-white rounded-r-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            className="px-4 py-2 bg-[#ff0000] text-white rounded-r-md hover:bg-[#d70000] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
           >
             {editingItem ? (
               <PencilIcon className="w-5 h-5" />

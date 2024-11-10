@@ -1,21 +1,21 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { getFirestore, collection, getDocs, addDoc, deleteDoc, doc, setDoc, getDoc, updateDoc } from 'firebase/firestore';
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 
-// Configuración de Firebase
 const firebaseConfig = {
-  apiKey: "AIzaSyAMvMOE7N6HvvO6tszg2GdX6ACuxRXI0Zw",
-  authDomain: "beta-nks.firebaseapp.com",
-  projectId: "beta-nks",
-  storageBucket: "beta-nks.firebasestorage.app",
-  messagingSenderId: "1059482740457",
-  appId: "1:1059482740457:web:7f01a8b20347c2bfbff278",
+  apiKey: "AIzaSyDCQj4CtQix41G_q_KHCKrWkCafoBkcm_w",
+  authDomain: "webnova-nks.firebaseapp.com",
+  projectId: "webnova-nks",
+  storageBucket: "webnova-nks.firebasestorage.app",
+  messagingSenderId: "1011049946794",
+  appId: "1:1011049946794:web:052c0e074ac471075abad3",
 };
 
-// Inicializar 
 const app = initializeApp(firebaseConfig);
 
 export const auth = getAuth(app);
 export const db = getFirestore(app);
+export const storage = getStorage(app);
 
-export { collection, getDocs, addDoc, deleteDoc, doc, getDoc, updateDoc, setDoc };
+export { collection, getDocs, addDoc, deleteDoc, doc, getDoc, updateDoc, setDoc, ref, uploadBytesResumable, getDownloadURL };
