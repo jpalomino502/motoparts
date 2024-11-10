@@ -4,8 +4,8 @@ import Home from './pages/Home';
 import ProductPage from './pages/ProductPage';
 import ProfilePage from './pages/ProfilePage';
 import AdminPage from './admin/AdminPage'; 
-import CartPage from './pages/CartPage';  // Asegúrate de importar la página del carrito
-import FavoritesPage from './pages/FavoritesPage'; // Importa la página de favoritos
+import CartPage from './pages/CartPage';
+import FavoritesPage from './pages/FavoritesPage';
 import Header from './components/common/Header';
 import MobileMenu from './components/common/MobileMenu';
 import Footer from './components/common/Footer';
