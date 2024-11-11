@@ -5,6 +5,7 @@ import ProductPage from './pages/ProductPage';
 import ProfilePage from './pages/ProfilePage';
 import CartPage from './pages/CartPage';
 import ContactPage from './pages/ContactPage';
+import ProductDelaitPage from './pages/ProductDelaitPage';
 import FavoritesPage from './pages/FavoritesPage';
 import AboutPage from './pages/AboutPage';
 import Header from './components/common/Header';
@@ -27,6 +28,7 @@ export default function App() {
               <Route path="/cart" element={<CartPage />} />
               <Route path="/favorites" element={<FavoritesPage />} />
               <Route path="/contact" element={<ContactPage />} />
+              <Route path="/productdelait" element={<ProductDelaitPage />} />
               <Route path="/about" element={<AboutPage />} />
             </Routes>
           </div>
