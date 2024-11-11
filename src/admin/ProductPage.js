@@ -11,37 +11,36 @@ export default function ProductPage() {
   const [categories, setCategories] = useState([]);
   const [brands, setBrands] = useState([]);
   const [productList, setProductList] = useState([]);
-  const [imageToCrop, setImageToCrop] = useState(null);
-  const [croppedImage, setCroppedImage] = useState(null);
-  const [cropping, setCropping] = useState(false);
-  const [editingProduct, setEditingProduct] = useState(null);
+  const [imageToCrop, setImageToCrop] = useState(null); // Estado para la imagen a recortar
+  const [croppedImage, setCroppedImage] = useState(null); // Imagen final recortada
+  const [cropping, setCropping] = useState(false); // Estado para controlar si se está recortando
+  const [editingProduct, setEditingProduct] = useState(null); // Producto que se está editando
   const { confirmDelete } = useAlert();
 
   useEffect(() => {
     fetchProductData(setCategories, setBrands, setProductList);
   }, []);
 
-  const handleEditProduct = (product) => {
-    setEditingProduct(product);
-    setCroppedImage(product.imageUrl || null); // Cargar la imagen existente del producto si está disponible
-  };
+  const handleEditProduct = (product) => setEditingProduct(product);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setImageToCrop(imageUrl);
-      setCropping(true);
+      const imageUrl = URL.createObjectURL(file); // Convertir la imagen a URL para pasarla al modal
+      setImageToCrop(imageUrl); // Establecer la URL de la imagen a recortar
+      setCropping(true); // Abrir el modal de recorte
     }
   };
 
   const handleConfirmCrop = (croppedImg) => {
+    console.log("Recorte confirmado, imagen recortada:", croppedImg);
     setCroppedImage(croppedImg);
     setCropping(false);
   };
+  
 
   const handleRemoveImage = () => {
-    setCroppedImage(null);
+    setCroppedImage(null); // Elimina la imagen recortada
   };
 
   return (
@@ -56,8 +55,8 @@ export default function ProductPage() {
           handleAddOrUpdateProduct(data, setProductList, editingProduct, setEditingProduct, setCroppedImage, toast)
         }
         editingProduct={editingProduct}
-        croppedImage={croppedImage}
-        handleRemoveImage={handleRemoveImage}
+        croppedImage={croppedImage} // Pasa la imagen recortada al formulario
+        handleRemoveImage={handleRemoveImage} // Pasar la función para eliminar imagen
       />
 
       {cropping && (

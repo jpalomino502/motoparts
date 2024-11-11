@@ -16,18 +16,45 @@ export async function fetchProductData(setCategories, setBrands, setProductList)
   setProductList(productSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
 }
 
-export async function handleAddOrUpdateProduct(productData, setProductList, editingProduct, setEditingProduct, setCroppedImage, toast) {
+export async function handleAddOrUpdateProduct(
+  productData,
+  setProductList,
+  editingProduct,
+  setEditingProduct,
+  setCroppedImage,
+  toast
+) {
+  console.log("handleAddOrUpdateProduct fue llamado");
+
+  const { croppedImage, ...restOfData } = productData;
+
+  console.log("Cropped Image recibido:", croppedImage);
+
   try {
-    let productId = editingProduct ? editingProduct.id : null;
+    if (croppedImage) {
+      console.log("Imagen recortada detectada, iniciando subida...");
+      const productImageFolder = editingProduct
+        ? `productImages/${editingProduct.id}`
+        : `productImages/${Date.now()}`;
+      const imageRef = ref(storage, `${productImageFolder}/imagen.jpg`);
+
+      await uploadString(imageRef, croppedImage, 'data_url');
+      const imageUrl = await getDownloadURL(imageRef);
+      console.log("Imagen subida correctamente, URL:", imageUrl);
+
+      restOfData.imageUrl = imageUrl;
+    }
 
     if (editingProduct) {
-      const productRef = doc(db, 'products', productId);
-      await updateDoc(productRef, productData);
-      setProductList(prev => prev.map(p => (p.id === productId ? { ...p, ...productData } : p)));
+      const productRef = doc(db, 'products', editingProduct.id);
+      await updateDoc(productRef, restOfData);
+      setProductList(prev =>
+        prev.map(p => (p.id === editingProduct.id ? { ...p, ...restOfData } : p))
+      );
       toast.success('Producto actualizado correctamente');
     } else {
-      const newDoc = await addDoc(collection(db, 'products'), productData);
-      setProductList(prev => [...prev, { id: newDoc.id, ...productData }]);
+      const newDoc = await addDoc(collection(db, 'products'), restOfData);
+      setProductList(prev => [...prev, { id: newDoc.id, ...restOfData }]);
       toast.success('Producto agregado correctamente');
     }
 
@@ -48,6 +75,7 @@ export async function handleDeleteProduct(productId, imageUrl, confirmDelete, se
       const imageRef = ref(storage, imageUrl);
       await deleteObject(imageRef);
     }
+
     await deleteDoc(doc(db, 'products', productId));
     setProductList(prev => prev.filter(p => p.id !== productId));
     toast.success('Producto eliminado correctamente');

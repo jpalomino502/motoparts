@@ -15,17 +15,19 @@ export default function ImageCropper({ image, onCropConfirm, onCropCancel, setCr
     if (croppedAreaPixels && image) {
       try {
         const croppedImg = await getCroppedImg(image, croppedAreaPixels);
-        setCroppedImage(croppedImg); // Actualiza la imagen recortada
-        onCropConfirm(croppedImg); // Pasa la imagen recortada al confirmar
+        console.log("Imagen recortada generada:", croppedImg);
+        setCroppedImage(croppedImg);
+        onCropConfirm(croppedImg);
       } catch (error) {
-        console.error("Error al recortar la imagen: ", error);
+        console.error("Error al generar la imagen recortada:", error);
       }
     }
   };
   
+  
 
   if (!image) {
-    return null; // Si no hay imagen, no renderizar el modal
+    return null;
   }
 
   return (

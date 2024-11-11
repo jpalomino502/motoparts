@@ -16,7 +16,6 @@ export default function ProductForm({
   const [discount, setDiscount] = useState(0);
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedBrand, setSelectedBrand] = useState('');
-  const [localCroppedImage, setLocalCroppedImage] = useState(null);
 
   useEffect(() => {
     if (editingProduct) {
@@ -27,8 +26,6 @@ export default function ProductForm({
       setDiscount(editingProduct.discount);
       setSelectedCategory(editingProduct.category);
       setSelectedBrand(editingProduct.brand);
-
-      setLocalCroppedImage(editingProduct.image || null);
     }
   }, [editingProduct]);
 
@@ -41,11 +38,14 @@ export default function ProductForm({
       price, 
       discount, 
       category: selectedCategory, 
-      brand: selectedBrand 
+      brand: selectedBrand,
+      croppedImage,
     };
+    console.log("Datos enviados desde ProductForm:", productData);
     onAddOrUpdateProduct(productData);
     resetForm();
   };
+  
 
   const resetForm = () => {
     setName('');
@@ -55,7 +55,6 @@ export default function ProductForm({
     setDiscount(0);
     setSelectedCategory('');
     setSelectedBrand('');
-    setLocalCroppedImage(null); // Resetea la imagen al limpiar el formulario
   };
 
   return (
@@ -158,16 +157,13 @@ export default function ProductForm({
         />
       </div>
 
-      {(localCroppedImage || croppedImage) && (
+      {croppedImage && (
         <div className="mb-4">
           <h3 className="text-sm font-semibold text-gray-700">Imagen Recortada:</h3>
-          <img src={localCroppedImage || croppedImage} alt="Imagen del Producto" className="w-32 h-32 object-cover mt-2" />
+          <img src={croppedImage} alt="Imagen del Producto" className="w-32 h-32 object-cover mt-2" />
           <button
             type="button"
-            onClick={() => {
-              handleRemoveImage();
-              setLocalCroppedImage(null);
-            }} 
+            onClick={handleRemoveImage} 
             className="mt-2 py-1 px-3 bg-red-500 text-white rounded hover:bg-red-600"
           >
             Quitar Imagen
