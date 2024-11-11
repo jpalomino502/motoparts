@@ -49,11 +49,9 @@ export default function Header() {
     const linkClass = isMobile
       ? 'block px-4 py-3 text-base font-medium w-full text-left mb-4'
       : 'px-3 py-2 text-sm font-medium flex items-center';
-    
+
     const links = [
       { to: '/products', icon: Tag, text: 'Productos', name: 'productos' },
-      { to: '/favorites', icon: Heart, text: 'Favoritos', name: 'favoritos' },
-      { to: '/cart', icon: ShoppingCart, text: 'Carrito', name: 'carrito' },
       { to: '/about', icon: Info, text: 'Quienes Somos', name: 'about' },
       { to: '/contact', icon: Phone, text: 'Contáctanos', name: 'contact' },
     ];
@@ -73,6 +71,30 @@ export default function Header() {
             {link.text}
           </Link>
         ))}
+        {user && (
+          <>
+            <Link
+              to="/favorites"
+              className={`${linkClass} ${
+                activeLink === 'favoritos' ? 'active-link' : 'text-gray-600 hover:text-[#201c1c] hover-link'
+              }`}
+              onClick={() => handleLinkClick('favoritos')}
+            >
+              <Heart className={`${isMobile ? 'h-5 w-5 mr-3 inline' : 'h-4 w-4 mr-1'}`} />
+              Favoritos
+            </Link>
+            <Link
+              to="/cart"
+              className={`${linkClass} ${
+                activeLink === 'carrito' ? 'active-link' : 'text-gray-600 hover:text-[#201c1c] hover-link'
+              }`}
+              onClick={() => handleLinkClick('carrito')}
+            >
+              <ShoppingCart className={`${isMobile ? 'h-5 w-5 mr-3 inline' : 'h-4 w-4 mr-1'}`} />
+              Carrito
+            </Link>
+          </>
+        )}
         {user ? (
           <Link
             to="/profile"
@@ -151,10 +173,7 @@ export default function Header() {
         </nav>
       </div>
 
-      <LoginModal
-        isOpen={isLoginModalOpen}
-        onClose={handleModalClose}
-      />
+      <LoginModal isOpen={isLoginModalOpen} onClose={handleModalClose} />
     </>
   );
 }

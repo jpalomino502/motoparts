@@ -3,7 +3,6 @@ import { useState } from 'react';
 import Sidebar from '../components/profile/Sidebar';
 import PersonalInfo from '../components/profile/PersonalInfo';
 import Orders from '../components/profile/Orders';
-import PaymentMethods from '../components/profile/PaymentMethods';
 import AccountSettings from '../components/profile/AccountSettings';
 
 const ProfilePage = () => {
@@ -36,7 +35,6 @@ const ProfilePage = () => {
                 <div className="h-full overflow-y-auto">
                   {activeTab === 'personal-info' && <PersonalInfo user={user} />}
                   {activeTab === 'orders' && <Orders orders={orders} />}
-                  {activeTab === 'payment' && <PaymentMethods />}
                   {activeTab === 'settings' && <AccountSettings />}
                 </div>
               </div>
