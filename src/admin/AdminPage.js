@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Sidebar from './Sidebar';
-import ProductForm from './productpages';
+import ProductForm from './ProductPage';
+import { ToastContainer } from 'react-toastify';
 import DataPage from './DataPage';
 
 export default function AdminPage() {
@@ -19,6 +20,7 @@ export default function AdminPage() {
                   <div className="px-4 py-5 sm:px-6">
                     <h3 className="text-lg leading-6 font-medium text-gray-900">Gestión de Productos</h3>
                     <ProductForm setProducts={setProducts} products={products} /> 
+                    <ToastContainer />
                   </div>
                 )}
                 {activeTab === 'data' && <DataPage />}
