@@ -4,7 +4,6 @@ import SearchBar from '../components/home/SearchBar';
 import TestimonialSection from '../components/home/TestimonialSection';
 import Features from '../components/home/Features';
 import FeaturedProducts from '../components/home/FeaturedProducts';
-import Newsletter from '../components/home/Newsletter';
 
 export default function Home() {
 
@@ -12,10 +11,9 @@ export default function Home() {
     <div>
       <HeroSection />
       <SearchBar />
-      <Features />
-      <TestimonialSection />
       <FeaturedProducts />
-      <Newsletter />
+      <TestimonialSection />
+      <Features />
     </div>
   );
 }

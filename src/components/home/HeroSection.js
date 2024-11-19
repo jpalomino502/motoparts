@@ -1,20 +1,54 @@
-import heroImage from '../../assets/hero.png';
+import React from 'react';
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+
+const heroImages = [
+  'https://via.placeholder.com/800x400/000',
+  'https://via.placeholder.com/800x400/000',
+  'https://via.placeholder.com/800x400/000',
+];
 
 export default function HeroSection() {
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 3000,
+    responsive: [
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 1,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+        },
+      },
+    ],
+    nextArrow: <div className="slick-next slick-arrow text-black">→</div>,
+    prevArrow: <div className="slick-prev slick-arrow text-black">←</div>,
+  };
+
   return (
-    <div className="bg-gradient-to-r from-[#ff0000] to-[#d70000] rounded-xl overflow-hidden shadow-xl mb-8">
-      <div className="flex flex-col md:flex-row items-center justify-between p-8">
-        <div className="mb-6 md:mb-0 md:mr-8">
-          <h1 className="text-4xl md:text-5xl font-bold text-[#fff0f0] mb-4">¡Descubre el filtro de aire ideal para tu moto!</h1>
-          <p className="text-xl text-[#fff0f0] mb-6">Encuentra todo lo que necesitas para tu moto con descuentos increíbles.</p>
-          <button className="bg-white text-[#500000] font-bold py-3 px-6 rounded-full hover:bg-[#f5f5f5] transition duration-300">
-            Ver Productos 
-          </button>
-        </div>
-        <div className="w-full md:w-1/2 hidden md:block">
-          <img src={heroImage} alt="Ofertas de repuestos" />
-        </div>
-      </div>
+    <div className='mb-8'>
+      <Slider {...settings}>
+        {heroImages.map((image, index) => (
+          <div key={index}>
+            <img
+              src={image}
+              alt={`Carrusel ${index + 1}`}
+              className="w-full h-auto"
+            />
+          </div>
+        ))}
+      </Slider>
     </div>
   );
 }
