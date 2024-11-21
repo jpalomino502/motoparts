@@ -6,7 +6,6 @@ import ProfilePage from './pages/ProfilePage';
 import CartPage from './pages/CartPage';
 import ContactPage from './pages/ContactPage';
 import ProductDelaitPage from './pages/ProductDelaitPage';
-import FavoritesPage from './pages/FavoritesPage';
 import AboutPage from './pages/AboutPage';
 import Header from './components/common/Header';
 import Footer from './components/common/Footer';
@@ -26,7 +25,6 @@ export default function App() {
               <Route path="/products" element={<ProductPage />} />
               <Route path="/profile" element={user ? <ProfilePage /> : <Navigate to="/" />} />
               <Route path="/cart" element={<CartPage />} />
-              <Route path="/favorites" element={<FavoritesPage />} />
               <Route path="/contact" element={<ContactPage />} />
               <Route path="/productdelait" element={<ProductDelaitPage />} />
               <Route path="/about" element={<AboutPage />} />

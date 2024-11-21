@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import {
   ShoppingCart,
   Menu,
-  Heart,
   User,
   Tag,
   Info,
@@ -25,8 +24,6 @@ export default function Header() {
     const path = location.pathname;
     if (path.includes("products")) {
       setActiveLink("productos");
-    } else if (path.includes("favorites")) {
-      setActiveLink("favoritos");
     } else if (path.includes("cart")) {
       setActiveLink("carrito");
     } else if (path.includes("profile")) {
@@ -71,47 +68,35 @@ export default function Header() {
           <Link
             key={link.name}
             to={link.to}
-            className={`${linkClass} ${activeLink === link.name
+            className={`${linkClass} ${
+              activeLink === link.name
                 ? "active-link"
                 : "text-white hover:text-white hover-link"
-              }`}
+            }`}
             onClick={() => handleLinkClick(link.name)}
           >
             <link.icon
-              className={`${isMobile ? "h-5 w-5 mr-3 inline" : "h-4 w-4 mr-1"}`}
+              className={`${
+                isMobile ? "h-5 w-5 mr-3 inline" : "h-4 w-4 mr-1"
+              }`}
             />
             {link.text}
           </Link>
         ))}
-        {user && (
-          <>
-            <Link
-              to="/favorites"
-              className={`${linkClass} ${activeLink === "favoritos"
-                  ? "active-link"
-                  : "text-white hover:text-white hover-link"
-                }`}
-              onClick={() => handleLinkClick("favoritos")}
-            >
-              <Heart
-                className={`${isMobile ? "h-5 w-5 mr-3 inline" : "h-4 w-4 mr-1"
-                  }`}
-              />
-              Favoritos
-            </Link>
-          </>
-        )}
         {user ? (
           <Link
             to="/profile"
-            className={`${linkClass} ${activeLink === "perfil"
+            className={`${linkClass} ${
+              activeLink === "perfil"
                 ? "active-link"
                 : "text-white hover:text-white hover-link"
-              }`}
+            }`}
             onClick={() => handleLinkClick("perfil")}
           >
             <User
-              className={`${isMobile ? "h-5 w-5 mr-3 inline" : "h-4 w-4 mr-1"}`}
+              className={`${
+                isMobile ? "h-5 w-5 mr-3 inline" : "h-4 w-4 mr-1"
+              }`}
             />
             Perfil
           </Link>
@@ -122,13 +107,16 @@ export default function Header() {
               setLoginModalOpen(true);
               setIsSideMenuOpen(false);
             }}
-            className={`${linkClass} ${activeLink === "login"
+            className={`${linkClass} ${
+              activeLink === "login"
                 ? "active-link"
                 : "text-white hover:text-white hover-link"
-              }`}
+            }`}
           >
             <User
-              className={`${isMobile ? "h-5 w-5 mr-3 inline" : "h-4 w-4 mr-1"}`}
+              className={`${
+                isMobile ? "h-5 w-5 mr-3 inline" : "h-4 w-4 mr-1"
+              }`}
             />
             Iniciar Sesión
           </button>
@@ -136,10 +124,11 @@ export default function Header() {
 
         <Link
           to="/cart"
-          className={`${linkClass} ${activeLink === "carrito"
+          className={`${linkClass} ${
+            activeLink === "carrito"
               ? "active-link"
               : "text-white hover:text-white hover-link"
-            }`}
+          }`}
           onClick={() => handleLinkClick("carrito")}
         >
           <ShoppingCart
@@ -155,10 +144,10 @@ export default function Header() {
     <>
       <header className="bg-black shadow-md fixed top-0 left-0 right-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-20">
+          <div className="flex items-center justify-between h-16">
             <div className="flex items-center">
               <Link to="/" onClick={() => handleLinkClick("")}>
-                <img src={logo} alt="Logo" className="h-16 w-auto" />
+                <img src={logo} alt="Logo" className="h-12 w-auto" />
               </Link>
             </div>
 
