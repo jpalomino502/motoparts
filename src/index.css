@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Header */
 .active-link,
 .hover-link:hover {
   position: relative;
@@ -27,6 +28,28 @@
   }
 }
 
+:root {
+  --header-height: 64px; /* Ajusta según la altura real del Header */
+}
+
+header {
+  height: var(--header-height);
+}
+
+main {
+  margin-top: var(--header-height);
+}
+
+
+.hero-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-image {
+  width: 100%;
+  object-fit: cover;
+}
 
 
   

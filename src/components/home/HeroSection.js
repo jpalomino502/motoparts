@@ -4,9 +4,9 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
 const heroImages = [
-  'https://via.placeholder.com/800x400/000',
-  'https://via.placeholder.com/800x400/000',
-  'https://via.placeholder.com/800x400/000',
+  'https://via.placeholder.com/800x400',
+  'https://via.placeholder.com/800x400',
+  'https://via.placeholder.com/800x400',
 ];
 
 export default function HeroSection() {
@@ -37,14 +37,14 @@ export default function HeroSection() {
   };
 
   return (
-    <div className='mb-8'>
+    <div className="hero-container">
       <Slider {...settings}>
         {heroImages.map((image, index) => (
           <div key={index}>
             <img
               src={image}
               alt={`Carrusel ${index + 1}`}
-              className="w-full h-auto"
+              className="hero-image"
             />
           </div>
         ))}

@@ -9,11 +9,13 @@ export default function Home() {
 
   return (
     <div>
-      <HeroSection />
-      <SearchBar />
-      <FeaturedProducts />
-      <TestimonialSection />
-      <Features />
+      <HeroSection/>
+      <div className='max-w-7xl mx-auto'>
+        <SearchBar />
+        <FeaturedProducts />
+        <TestimonialSection />
+        <Features />
+      </div>
     </div>
   );
 }

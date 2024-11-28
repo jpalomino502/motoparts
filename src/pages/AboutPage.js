@@ -3,8 +3,7 @@ import { Users, Target, Zap, Award } from 'lucide-react'
 
 export default function QuienesSomos() {
   return (
-    <div className="bg-white">
-      {/* Hero Section */}
+    <div className="flex-grow px-4 sm:px-6 lg:px-8 py-8">
       <section className="relative h-96">
         <img
           src="/placeholder.svg?height=400&width=1200"
@@ -18,7 +17,6 @@ export default function QuienesSomos() {
         </div>
       </section>
 
-      {/* Nuestra Historia */}
       <section className="py-16 px-4 max-w-6xl mx-auto">
         <h2 className="text-3xl font-bold text-[#ff0000] mb-8 text-center">Nuestra Historia</h2>
         <div className="grid md:grid-cols-2 gap-8 items-center">

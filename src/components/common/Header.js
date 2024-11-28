@@ -21,6 +21,7 @@ export default function Header() {
   const location = useLocation();
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     const path = location.pathname;
     if (path.includes("products")) {
       setActiveLink("productos");
@@ -165,12 +166,6 @@ export default function Header() {
           </div>
         </div>
       </header>
-
-      {/* Content Padding Below Header */}
-      <div className="pt-20">
-        {/* Main content goes here */}
-      </div>
-
       <div
         className={`fixed inset-0 z-50 ${isSideMenuOpen ? "block" : "hidden"}`}
         role="dialog"

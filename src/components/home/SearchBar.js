@@ -1,6 +1,6 @@
 export default function Component() {
   return (
-    <div className="bg-red-600 p-4 rounded-lg mb-8">
+    <div className="bg-red-600 p-4 rounded-lg mb-8 mt-8">
       <h2 className="text-white text-xl font-bold text-center mb-4">
         ENCUENTRA EL FILTRO IDEAL PARA TU MOTO
       </h2>

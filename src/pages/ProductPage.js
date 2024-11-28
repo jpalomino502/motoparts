@@ -11,12 +11,11 @@ export default function ProductPage() {
   const [showDiscounts, setShowDiscounts] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
 
-  // Leer parámetros de la URL
   const location = useLocation();
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
     const discount = queryParams.get('discount');
-    setShowDiscounts(discount === 'true');  // Activar el filtro de descuentos si el parámetro es "true"
+    setShowDiscounts(discount === 'true');
   }, [location]);
 
   const filteredProducts = products.filter(
@@ -24,8 +23,8 @@ export default function ProductPage() {
   );
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      <div className="container mx-auto px-4 py-2">
+    <div className="min-h-screen bg-gray-100 ">
+      <div className="container mx-auto px-4 py-2 max-w-7xl mx-auto">
         <nav className="text-sm mb-6">
           <ol className="list-none p-0 inline-flex">
             <li className="flex items-center">

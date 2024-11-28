@@ -15,15 +15,14 @@ const LoginModal = ({ isOpen, onClose }) => {
   const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
-    // Deshabilitar scroll cuando el modal esté abierto
     if (isOpen) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = 'auto';
     } else {
       document.body.style.overflow = 'auto';
     }
     
     return () => {
-      document.body.style.overflow = 'auto'; // Restaurar el scroll al desmontar el modal
+      document.body.style.overflow = 'auto';
     };
   }, [isOpen]);
 
@@ -42,7 +41,7 @@ const LoginModal = ({ isOpen, onClose }) => {
         await register(email, password, name);
         navigate('/profile');
       } else if (modalView === 'reset') {
-        await resetPassword(email); // Función para restablecer la contraseña
+        await resetPassword(email);
         setError('Se ha enviado un enlace de restablecimiento a tu correo electrónico.');
       }
       onClose();
