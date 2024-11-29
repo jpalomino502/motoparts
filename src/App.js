@@ -10,11 +10,14 @@ import AboutPage from './pages/AboutPage';
 import Header from './components/common/Header';
 import Footer from './components/common/Footer';
 import { useAuth } from './context/AuthContext';
+import { CartProvider } from "./context/CartContext";
 
 export default function App() {
   const { user } = useAuth();
 
   return (
+    <CartProvider>
+
     <Router>
       <div className="min-h-screen bg-gray-100 flex flex-col">
         <Header />
@@ -34,5 +37,6 @@ export default function App() {
         <Footer />
       </div>
     </Router>
+    </CartProvider>
   );
 }

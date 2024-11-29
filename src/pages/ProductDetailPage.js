@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import { db } from '../firebase/firebase';
 import { Star, Minus, Plus, ChevronRight } from 'lucide-react';
-import { collection, getDocs } from 'firebase/firestore';
+import { doc, getDoc } from 'firebase/firestore';
 
 export default function ProductPage() {
+  const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [images, setImages] = useState([]);
   const [reviews, setReviews] = useState([]);
@@ -15,16 +17,17 @@ export default function ProductPage() {
   useEffect(() => {
     const fetchProductData = async () => {
       try {
-        const querySnapshot = await getDocs(collection(db, 'products'));
-        const productData = [];
-        querySnapshot.forEach((doc) => {
-          productData.push(doc.data());
-        });
+        const docRef = doc(db, 'products', id);
+        const docSnap = await getDoc(docRef);
 
-        const fetchedProduct = productData[0];
-        setProduct(fetchedProduct);
-        setImages(fetchedProduct.additionalImages || []);
-        setReviews(fetchedProduct.reviews || []);
+        if (docSnap.exists()) {
+          const fetchedProduct = docSnap.data();
+          setProduct(fetchedProduct);
+          setImages(fetchedProduct.additionalImages || []);
+          setReviews(fetchedProduct.reviews || []);
+        } else {
+          console.log("No such document!");
+        }
       } catch (error) {
         console.error('Error fetching product data:', error);
       } finally {
@@ -33,11 +36,17 @@ export default function ProductPage() {
     };
 
     fetchProductData();
-  }, []);
+  }, [id]);
 
   if (isLoading) {
     return <LoadingSkeleton />;
   }
+
+  const hasDiscount = product.discount && parseInt(product.discount) > 0; // Check if discount exists and is greater than 0
+
+  const formatPrice = (price) => {
+    return `COP ${parseInt(price).toLocaleString('es-CO')}`;
+  };
 
   return (
     <div className="max-w-7xl mx-auto p-4">
@@ -45,15 +54,16 @@ export default function ProductPage() {
         <div className="lg:w-1/2">
           <div className="flex flex-col sm:flex-row gap-4 mb-8">
             <div className="flex-1 order-1 sm:order-2">
-            <img
-              src={images[selectedImage]}
-              alt={product.title || "Producto sin título"}
-              className="w-full aspect-square object-cover border-2 border-purple-200 rounded-lg"
-            />
+              <img
+                src={images[selectedImage]}
+                alt={product.title || "Producto sin título"}
+                className="w-full aspect-square object-cover border-2 border-purple-200 rounded-lg"
+              />
             </div>
             <div className="flex sm:flex-col gap-2 order-2 sm:order-1 overflow-x-auto sm:overflow-y-auto">
               {images.map((img, index) => (
                 <img
+                  key={index}
                   src={img}
                   alt={`Vista ${index + 1}`}
                   className={`w-16 h-16 object-cover cursor-pointer border-2 ${
@@ -86,19 +96,32 @@ export default function ProductPage() {
         </div>
 
         <div className="lg:w-1/2">
-          <h1 className="text-2xl font-bold mb-4">{product.title}</h1>
+          <div className="flex items-center justify-between mb-4">
+            <h1 className="text-2xl font-bold">{product.title}</h1>
+
+            {/* Mostrar etiqueta de descuento solo si hay descuento */}
+            {hasDiscount && (
+              <div className="bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">
+                {product.discount}% OFF
+              </div>
+            )}
+          </div>
+
           <div className="flex items-center gap-2 mb-4">
             {[...Array(5)].map((_, i) => (
               <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
             ))}
             <span className="text-sm text-gray-600">{reviews.length} Comentarios</span>
           </div>
-          <div className="flex items-center gap-4 mb-6">
-            {product.discount > 0 && (
-              <span className="text-gray-500 line-through">${product.price}</span>
+
+          <div className="flex items-center gap-4 mb-6 relative">
+            {hasDiscount && (
+              <span className="text-gray-500 line-through">
+                {formatPrice(product.price)} {/* Precio original tachado */}
+              </span>
             )}
             <span className="text-2xl font-bold">
-              ${product.discount > 0 ? product.price * (1 - product.discount / 100) : product.price}
+              {formatPrice(product.netPrice)} {/* Precio final (neto) */}
             </span>
           </div>
 
@@ -131,7 +154,6 @@ export default function ProductPage() {
             <span className="text-sm text-gray-500">Disponibles: {product.stock}</span>
           </div>
 
-
           <button className="w-full bg-red-50 border border-red-600 text-red-600 py-2 rounded mb-2 hover:bg-red-100">
             AÑADIR AL CARRITO
           </button>
@@ -155,6 +177,14 @@ export default function ProductPage() {
                 onClick={() => setShowFullDescription(true)}
               >
                 Leer más <ChevronRight className="w-4 h-4 ml-1" />
+              </button>
+            )}
+            {showFullDescription && (
+              <button
+                className="text-red-600 font-semibold mt-4 flex items-center"
+                onClick={() => setShowFullDescription(false)}
+              >
+                Leer menos <ChevronRight className="w-4 h-4 ml-1 rotate-180" />
               </button>
             )}
           </div>
@@ -185,43 +215,18 @@ export default function ProductPage() {
 
 function LoadingSkeleton() {
   return (
-    <div className="max-w-7xl mx-auto p-4 animate-pulse">
+    <div className="max-w-7xl mx-auto p-4">
       <div className="flex flex-col lg:flex-row gap-8">
-        <div className="lg:w-1/2">
-          <div className="aspect-square bg-gray-200 rounded-lg mb-4"></div>
-          <div className="flex gap-2 justify-center">
-            {[...Array(4)].map((_, index) => (
-              <div key={index} className="w-16 h-16 bg-gray-200 rounded"></div>
-            ))}
-          </div>
+        <div className="lg:w-1/2 space-y-4">
+          <div className="w-full aspect-square bg-gray-200 rounded-lg"></div>
         </div>
-
-        <div className="lg:w-1/2">
-          <div className="h-8 bg-gray-200 rounded w-3/4 mb-4"></div>
-          <div className="h-4 bg-gray-200 rounded w-1/4 mb-4"></div>
-          <div className="h-6 bg-gray-200 rounded w-1/2 mb-6"></div>
-          <div className="h-10 bg-gray-200 rounded mb-2"></div>
-          <div className="h-10 bg-gray-200 rounded mb-6"></div>
-          <div className="space-y-2">
-            <div className="h-4 bg-gray-200 rounded"></div>
-            <div className="h-4 bg-gray-200 rounded"></div>
-            <div className="h-4 bg-gray-200 rounded"></div>
-            <div className="h-4 bg-gray-200 rounded w-2/3"></div>
-          </div>
-        </div>
-      </div>
-      <div className="mt-8">
-        <div className="h-6 bg-gray-200 rounded w-1/4 mb-4"></div>
-        <div className="space-y-4">
-          {[...Array(3)].map((_, index) => (
-            <div key={index} className="bg-gray-100 rounded-lg p-4">
-              <div className="h-4 bg-gray-200 rounded w-1/3 mb-2"></div>
-              <div className="h-4 bg-gray-200 rounded"></div>
-            </div>
-          ))}
+        <div className="lg:w-1/2 space-y-4">
+          <div className="h-8 bg-gray-200 rounded"></div>
+          <div className="h-6 bg-gray-200 rounded"></div>
+          <div className="h-8 bg-gray-200 rounded"></div>
+          <div className="h-10 bg-gray-200 rounded"></div>
         </div>
       </div>
     </div>
   );
 }
-

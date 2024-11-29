@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../firebase/firebase";
-import { useNavigate, useLocation } from "react-router-dom"; // Agrega useLocation
+import { useNavigate, useLocation } from "react-router-dom";
+import { useCart } from '../../context/CartContext';
+import { ToastContainer, toast } from 'react-toastify';  // Importamos ToastContainer y toast
+import 'react-toastify/dist/ReactToastify.css';  // Estilos de Toastify // Agrega useLocation
 import FilterSidebar from './FilterSidebar';
 
 export default function ProductList({ initialShowDiscounts = false }) {
@@ -21,6 +24,7 @@ export default function ProductList({ initialShowDiscounts = false }) {
   const [selectedEngineSizes, setSelectedEngineSizes] = useState([]);
   const [years, setYears] = useState([]);
   const [selectedYears, setSelectedYears] = useState([]);
+  const { addToCart } = useCart();
 
   const navigate = useNavigate();
   const location = useLocation(); // Para obtener los parámetros de la URL
@@ -102,134 +106,146 @@ export default function ProductList({ initialShowDiscounts = false }) {
     const discount = parseFloat(product.discount);
     const hasDiscount = discount > 0;
     const salePrice = product.netPrice;
-      return (
-        <div
-          className="bg-white rounded-lg shadow-md flex flex-col justify-between h-full relative p-4"
-          style={{ cursor: "pointer" }}
-          onClick={() => {
-            if (!isLoading) {
-              navigate(`/productdetail/${product.id}`);
-            }
-          }}
-        >
-          {hasDiscount && (
-            <div className="absolute top-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">
-              {discount}% OFF
-            </div>
-          )}
-          <div className="text-center flex flex-col justify-between flex-1">
-            <h2
-              className="font-medium text-2xl sm:text-xl md:text-2xl mb-2 h-14 overflow-hidden text-ellipsis whitespace-nowrap"
-              title={product.title}
-            >
-              {isLoading ? (
-                <div className="bg-gray-300 h-6 w-3/4 mx-auto mb-2 rounded animate-pulse"></div>
-              ) : (
-                product.title
-              )}
-            </h2>
-            <div className="w-3/4 mx-auto sm:w-full sm:mx-0 aspect-square relative bg-gray-200 rounded-lg overflow-hidden mb-4">
-              {isLoading ? (
-                <div className="w-full h-full bg-gray-300 animate-pulse"></div>
-              ) : (
-                <img
-                  src={product.thumbnail}
-                  alt={product.title}
-                  className="w-full h-full object-cover"
-                />
-              )}
-            </div>
-            <div>
-              {isLoading ? (
-                <>
-                  <div className="bg-gray-300 h-4 w-1/2 mx-auto mb-2 rounded animate-pulse"></div>
-                  <div className="flex items-center justify-center gap-2 mb-4">
-                    <div className="bg-gray-300 h-4 w-1/4 rounded animate-pulse"></div>
-                    <div className="bg-gray-300 h-6 w-1/4 rounded animate-pulse"></div>
-                  </div>
-                </>
-              ) : (
-                <>
-                  <p className="text-sm mb-1">REFERENCIA {product.reference}</p>
-                  <div className="flex items-center justify-center gap-2 mb-4">
-                    {hasDiscount ? (
-                      <>
-                        <span className="text-gray-500 line-through">
-                          {formatPrice(product.price)}
-                        </span>
-                        <span className="text-xl font-bold">{formatPrice(salePrice)}</span>
-                      </>
-                    ) : (
-                      <span className="text-xl font-bold">{formatPrice(salePrice)}</span>
-                    )}
-                  </div>
-                </>
-              )}
-            </div>
+
+    const handleAddToCart = (product) => {
+      addToCart(product); // Añadir al carrito
+      toast.success("Producto añadido correctamente al carrito!"); // Notificación de éxito
+    };
+
+    return (
+      <div
+        className="bg-white rounded-lg shadow-md flex flex-col justify-between h-full relative p-4"
+        style={{ cursor: "pointer" }}
+        onClick={() => {
+          if (!isLoading) {
+            navigate(`/productdetail/${product.id}`);
+          }
+        }}
+      >
+        {hasDiscount && (
+          <div className="absolute top-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">
+            {discount}% OFF
           </div>
-          <div className="mt-4">
-            <button
-              className="w-full mb-2 bg-red-50 text-red-600 text-sm border border-red-600 rounded py-1.5 hover:bg-red-50 disabled:opacity-50 disabled:cursor-not-allowed"
-              onClick={(e) => {
-                e.stopPropagation();
-                if (!isLoading) {
-                  setSelectedProduct(product);
-                  setOpenDialog(true);
-                }
-              }}
-              disabled={isLoading}
-            >
-              VER TODAS LAS APLICACIONES
-            </button>
-            <button
-              className="w-full bg-red-600 text-white rounded py-1.5 hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed"
-              disabled={isLoading}
-            >
-              AÑADIR AL CARRITO
-            </button>
+        )}
+        <div className="text-center flex flex-col justify-between flex-1">
+          <h2
+            className="font-medium text-2xl sm:text-xl md:text-2xl mb-2 h-14 overflow-hidden text-ellipsis whitespace-nowrap"
+            title={product.title}
+          >
+            {isLoading ? (
+              <div className="bg-gray-300 h-6 w-3/4 mx-auto mb-2 rounded animate-pulse"></div>
+            ) : (
+              product.title
+            )}
+          </h2>
+          <div className="w-3/4 mx-auto sm:w-full sm:mx-0 aspect-square relative bg-gray-200 rounded-lg overflow-hidden mb-4">
+            {isLoading ? (
+              <div className="w-full h-full bg-gray-300 animate-pulse"></div>
+            ) : (
+              <img
+                src={product.thumbnail}
+                alt={product.title}
+                className="w-full h-full object-cover"
+              />
+            )}
+          </div>
+          <div>
+            {isLoading ? (
+              <>
+                <div className="bg-gray-300 h-4 w-1/2 mx-auto mb-2 rounded animate-pulse"></div>
+                <div className="flex items-center justify-center gap-2 mb-4">
+                  <div className="bg-gray-300 h-4 w-1/4 rounded animate-pulse"></div>
+                  <div className="bg-gray-300 h-6 w-1/4 rounded animate-pulse"></div>
+                </div>
+              </>
+            ) : (
+              <>
+                <p className="text-sm mb-1">REFERENCIA {product.reference}</p>
+                <div className="flex items-center justify-center gap-2 mb-4">
+                  {hasDiscount ? (
+                    <>
+                      <span className="text-gray-500 line-through">
+                        {formatPrice(product.price)}
+                      </span>
+                      <span className="text-xl font-bold">{formatPrice(salePrice)}</span>
+                    </>
+                  ) : (
+                    <span className="text-xl font-bold">{formatPrice(salePrice)}</span>
+                  )}
+                </div>
+              </>
+            )}
           </div>
         </div>
-      );
-    };
+        <div className="mt-4">
+          <button
+            className="w-full mb-2 bg-red-50 text-red-600 text-sm border border-red-600 rounded py-1.5 hover:bg-red-50 disabled:opacity-50 disabled:cursor-not-allowed"
+            onClick={(e) => {
+              e.stopPropagation();
+              if (!isLoading) {
+                setSelectedProduct(product);
+                setOpenDialog(true);
+              }
+            }}
+            disabled={isLoading}
+          >
+            VER TODAS LAS APLICACIONES
+          </button>
+          <button
+            className="w-full bg-red-600 text-white rounded py-1.5 hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed"
+            onClick={(e) => {
+              e.stopPropagation();
+              if (!isLoading) {
+                handleAddToCart(product); // Llamamos a la función para añadir al carrito
+              }
+            }}
+            disabled={isLoading}
+          >
+            AÑADIR AL CARRITO
+          </button>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="min-h-screen bg-gray-100">
       <div className="container mx-auto px-4 py-8">
-        <div className="flex flex-col lg:flex-row gap-8">
-          <aside className={`w-full lg:w-1/4 ${showFilters ? 'block' : 'hidden lg:block'}`}>
-            <div className="sticky top-4">
-              <FilterSidebar 
-                priceRange={priceRange} 
-                setPriceRange={setPriceRange} 
-                searchTerm={searchTerm} 
-                setSearchTerm={setSearchTerm} 
-                showDiscounts={showDiscounts} 
-                setShowDiscounts={setShowDiscounts}
-                brands={brands}
-                selectedBrands={selectedBrands}
-                setSelectedBrands={setSelectedBrands}
-                models={models}
-                selectedModels={selectedModels}
-                setSelectedModels={setSelectedModels}
-                engineSizes={engineSizes}
-                selectedEngineSizes={selectedEngineSizes}
-                setSelectedEngineSizes={setSelectedEngineSizes}
-                years={years}
-                selectedYears={selectedYears}
-                setSelectedYears={setSelectedYears}
-              />
-            </div>
-          </aside>
-
+        <div className="flex flex-col lg:flex-row gap-8">  
+        <aside className={`w-full lg:w-1/4 ${showFilters ? 'block' : 'hidden lg:block'}`}>
+          <div className="sticky top-24">
+            <FilterSidebar 
+              priceRange={priceRange} 
+              setPriceRange={setPriceRange} 
+              searchTerm={searchTerm} 
+              setSearchTerm={setSearchTerm} 
+              showDiscounts={showDiscounts} 
+              setShowDiscounts={setShowDiscounts}
+              brands={brands}
+              selectedBrands={selectedBrands}
+              setSelectedBrands={setSelectedBrands}
+              models={models}
+              selectedModels={selectedModels}
+              setSelectedModels={setSelectedModels}
+              engineSizes={engineSizes}
+              selectedEngineSizes={selectedEngineSizes}
+              setSelectedEngineSizes={setSelectedEngineSizes}
+              years={years}
+              selectedYears={selectedYears}
+              setSelectedYears={setSelectedYears}
+            />
+          </div>
+        </aside>
           <section className="w-full lg:w-3/4">
-            <div className="mb-4 flex justify-between items-center">
-              <button
-                onClick={() => setShowFilters(!showFilters)}
-                className="lg:hidden w-full bg-white text-gray-800 py-2 px-4 rounded-md border border-gray-300 hover:bg-gray-50 transition-colors mb-4"
-              >
-                {showFilters ? "Ocultar Filtros" : "Mostrar Filtros"}
-              </button>
-            </div>
-            
+
+          <div className="mb-4 flex justify-between items-center">
+            <button
+              onClick={() => setShowFilters(!showFilters)}
+              className="lg:hidden w-full bg-white text-gray-800 py-2 px-4 rounded-md border border-gray-300 hover:bg-gray-50 transition-colors mb-4 sticky top-24 z-10"
+            >
+              {showFilters ? "Ocultar Filtros" : "Mostrar Filtros"}
+            </button>
+          </div> 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {loading
                 ? Array(6)
@@ -284,6 +300,7 @@ export default function ProductList({ initialShowDiscounts = false }) {
           </div>
         </div>
       )}
+      <ToastContainer />
     </div>
   );
 }

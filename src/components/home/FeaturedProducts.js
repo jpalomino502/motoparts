@@ -2,12 +2,16 @@ import React, { useState, useEffect } from "react";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../firebase/firebase";
 import { useNavigate } from "react-router-dom";
+import { useCart } from '../../context/CartContext';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function ProductList() {
   const [openDialog, setOpenDialog] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { addToCart } = useCart();
 
   const navigate = useNavigate();
 
@@ -38,6 +42,11 @@ export default function ProductList() {
     const discount = parseFloat(product.discount);
     const hasDiscount = discount > 0;
     const salePrice = product.netPrice;
+
+    const handleAddToCart = (product) => {
+      addToCart(product);
+      toast.success("Producto añadido correctamente al carrito!");
+    };
 
     return (
       <div
@@ -120,6 +129,12 @@ export default function ProductList() {
           </button>
           <button
             className="w-full bg-red-600 text-white rounded py-1.5 hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed"
+            onClick={(e) => {
+              e.stopPropagation();
+              if (!isLoading) {
+                handleAddToCart(product); // Llamamos a la función para añadir al carrito
+              }
+            }}
             disabled={isLoading}
           >
             AÑADIR AL CARRITO
@@ -185,6 +200,8 @@ export default function ProductList() {
           </div>
         </div>
       )}
+
+      <ToastContainer />
     </div>
   );
 }
