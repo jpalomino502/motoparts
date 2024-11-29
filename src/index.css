@@ -41,15 +41,7 @@ main {
 }
 
 
-.hero-container {
-  position: relative;
-  overflow: hidden;
-}
-
-.hero-image {
-  width: 100%;
-  object-fit: cover;
-}
+/*Hero*/
 
 
   
