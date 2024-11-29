@@ -2,6 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
+
+body {
+    font-family: 'Quicksand', sans-serif;
+}
+
+h1, h2, h3 {
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 700;
+}
+
+p {
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 400;
+}
+
+
 :root {
   --header-height: 64px;
 }
