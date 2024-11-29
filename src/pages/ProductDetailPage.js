@@ -123,7 +123,7 @@ export default function ProductPage() {
               <button
                 className="px-3 py-1 border-l"
                 onClick={() => setQuantity(Math.min(quantity + 1, product.stock))}
-                disabled={quantity >= product.stock} // Desactiva el botón si la cantidad alcanza el stock
+                disabled={quantity >= product.stock}
               >
                 <Plus className="w-4 h-4" />
               </button>

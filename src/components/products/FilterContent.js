@@ -1,9 +1,7 @@
-import React from 'react'; 
-import { Search, Percent, ChevronDown } from 'lucide-react'; 
+import React from 'react';
+import { Search, Percent, ChevronDown } from 'lucide-react';
 
 export default function FilterContent({ 
-  priceRange, 
-  setPriceRange, 
   searchTerm, 
   setSearchTerm, 
   showDiscounts, 
@@ -64,24 +62,6 @@ export default function FilterContent({
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
-      </div>
-
-      <div>
-        <label htmlFor="price-range" className="block text-sm font-medium text-gray-700 mb-1">Rango de Precio</label>
-        <input
-          type="range"
-          id="price-range"
-          min={priceRange[0]}
-          max={priceRange[1]}
-          step={(priceRange[1] - priceRange[0]) / 100}
-          value={priceRange[1]}
-          onChange={(e) => setPriceRange([priceRange[0], parseInt(e.target.value)])}
-          className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
-        />
-        <div className="flex justify-between mt-1 text-sm text-gray-600">
-          <span>COP {priceRange[0].toLocaleString('es-CO')}</span>
-          <span>COP {priceRange[1].toLocaleString('es-CO')}</span>
-        </div>
       </div>
 
       <button

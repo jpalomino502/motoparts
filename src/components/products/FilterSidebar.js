@@ -2,8 +2,6 @@ import React from 'react';
 import FilterContent from './FilterContent';
 
 export default function FilterSidebar({ 
-  priceRange, 
-  setPriceRange, 
   searchTerm, 
   setSearchTerm, 
   showDiscounts, 
@@ -25,8 +23,6 @@ export default function FilterSidebar({
     <div className="bg-white p-4 rounded-lg shadow-md">
       <h2 className="text-lg font-semibold mb-4 text-gray-800">Filtros</h2>
       <FilterContent 
-        priceRange={priceRange}
-        setPriceRange={setPriceRange}
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
         showDiscounts={showDiscounts}
@@ -38,8 +34,7 @@ export default function FilterSidebar({
         selectedModels={selectedModels}
         setSelectedModels={setSelectedModels}
         engineSizes={engineSizes}
-        selectedEngineSizes={selectedEngineSizes}
-        setSelectedEngineSizes={setSelectedEngineSizes}
+        selectedEngineSizes={setSelectedEngineSizes}
         years={years}
         selectedYears={selectedYears}
         setSelectedYears={setSelectedYears}

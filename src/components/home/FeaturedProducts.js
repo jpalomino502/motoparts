@@ -37,9 +37,7 @@ export default function ProductList() {
   const ProductCard = ({ product, isLoading }) => {
     const discount = parseFloat(product.discount);
     const hasDiscount = discount > 0;
-    const salePrice = hasDiscount
-      ? (product.netPrice * (1 - discount / 100)).toFixed(0)
-      : product.netPrice;
+    const salePrice = product.netPrice;
 
     return (
       <div
@@ -153,34 +151,33 @@ export default function ProductList() {
 
       {openDialog && selectedProduct && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-lg p-6 max-w-5xl w-full overflow-auto">
+          <div className="bg-white rounded-lg p-6 max-w-3xl w-full max-h-[90vh] overflow-auto">
             <h2 className="text-xl font-bold mb-4">Vehículos Compatibles - {selectedProduct.reference}</h2>
             <div className="overflow-x-auto">
-              <table className="min-w-full table-auto border-collapse border border-gray-700">
-                <thead className="bg-gray-100">
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-50">
                   <tr>
-                    <th className="py-2 px-4 text-left font-semibold text-gray-black">MARCA</th>
-                    <th className="py-2 px-4 text-left font-semibold text-gray-black">MODELO</th>
-                    <th className="py-2 px-4 text-left font-semibold text-gray-black">AÑO</th>
-                    <th className="py-2 px-4 text-left font-semibold text-gray-black">TAMAÑO MOTOR</th>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Marca</th>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Modelo</th>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Año</th>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tamaño Motor</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody className="bg-white divide-y divide-gray-200">
                   {Array.isArray(selectedProduct.compatibleVehicles) &&
                     selectedProduct.compatibleVehicles.map((vehicle, index) => (
-                      <tr key={index} className="border-t">
-                        <td className="py-2 px-4">{vehicle.brand}</td>
-                        <td className="py-2 px-4">{vehicle.model}</td>
-                        <td className="py-2 px-4">{vehicle.year}</td>
-                        <td className="py-2 px-4">{vehicle.engineSize}cc</td>
+                      <tr key={index} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{vehicle.brand}</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{vehicle.model}</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{vehicle.year}</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{vehicle.engineSize}cc</td>
                       </tr>
                     ))}
                 </tbody>
               </table>
             </div>
-
             <button
-              className="mt-4 w-full bg-red-600 text-white rounded py-1.5 hover:bg-red-700"
+              className="mt-6 w-full bg-red-600 text-white rounded py-2 hover:bg-red-700 transition-colors"
               onClick={() => setOpenDialog(false)}
             >
               Cerrar

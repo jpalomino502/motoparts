@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../firebase/firebase";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom"; // Agrega useLocation
 import FilterSidebar from './FilterSidebar';
 
 export default function ProductList({ initialShowDiscounts = false }) {
@@ -23,7 +23,9 @@ export default function ProductList({ initialShowDiscounts = false }) {
   const [selectedYears, setSelectedYears] = useState([]);
 
   const navigate = useNavigate();
+  const location = useLocation(); // Para obtener los parámetros de la URL
 
+  // Cargar productos y configurar filtros iniciales
   useEffect(() => {
     const loadProductsFromFirestore = async () => {
       try {
@@ -34,11 +36,9 @@ export default function ProductList({ initialShowDiscounts = false }) {
         }));
         setProducts(productsList);
         
-        // Find the highest price for the price range
         const maxPrice = Math.max(...productsList.map(product => product.netPrice));
         setPriceRange([0, maxPrice]);
 
-        // Extract unique values for filters
         const uniqueBrands = [...new Set(productsList.flatMap(product => 
           product.compatibleVehicles?.map(vehicle => vehicle.brand) || []
         ))];
@@ -56,7 +56,13 @@ export default function ProductList({ initialShowDiscounts = false }) {
         setModels(uniqueModels);
         setEngineSizes(uniqueEngineSizes);
         setYears(uniqueYears);
-        
+
+        const queryParams = new URLSearchParams(location.search);
+        setSelectedBrands(queryParams.getAll('brands') || []);
+        setSelectedModels(queryParams.getAll('models') || []);
+        setSelectedEngineSizes(queryParams.getAll('engineSizes') || []);
+        setSelectedYears(queryParams.getAll('years') || []);
+
         setLoading(false);
       } catch (error) {
         console.error("Error al obtener productos de Firestore:", error);
@@ -65,13 +71,13 @@ export default function ProductList({ initialShowDiscounts = false }) {
     };
 
     loadProductsFromFirestore();
-  }, []);
+  }, [location.search]);
 
   useEffect(() => {
-    const queryParams = new URLSearchParams(window.location.search);
+    const queryParams = new URLSearchParams(location.search);
     const discount = queryParams.get('discount');
     setShowDiscounts(discount === 'true');
-  }, []);
+  }, [location.search]);
 
   const formatPrice = (price) => {
     return `COP ${parseInt(price, 10).toLocaleString("es-CO")}`;
@@ -95,10 +101,7 @@ export default function ProductList({ initialShowDiscounts = false }) {
   const ProductCard = ({ product, isLoading }) => {
     const discount = parseFloat(product.discount);
     const hasDiscount = discount > 0;
-    const salePrice = hasDiscount
-      ? (product.netPrice * (1 - discount / 100)).toFixed(0)
-      : product.netPrice;
-
+    const salePrice = product.netPrice;
       return (
         <div
           className="bg-white rounded-lg shadow-md flex flex-col justify-between h-full relative p-4"
