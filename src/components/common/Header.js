@@ -1,13 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  ShoppingCart,
-  Menu,
-  User,
-  Tag,
-  Info,
-  Phone,
-  X,
-} from "lucide-react";
+import { ShoppingCart, Menu, User, Tag, Info, Phone, X } from "lucide-react";
 import LoginModal from "./LoginModal";
 import { useAuth } from "../../hooks/useAuth";
 import { Link, useLocation } from "react-router-dom";
@@ -23,9 +15,7 @@ export default function Header() {
   useEffect(() => {
     window.scrollTo(0, 0);
     const path = location.pathname;
-
-    // Activar la ruta correcta dependiendo de la URL
-    if (path.includes("products") || path.includes("productdelait")) {
+    if (path.includes("products") || path.includes("productdetail")) {
       setActiveLink("productos");
     } else if (path.includes("cart")) {
       setActiveLink("carrito");
@@ -42,7 +32,6 @@ export default function Header() {
 
   const handleModalClose = () => {
     setLoginModalOpen(false);
-    // Mantener la ruta activa después de cerrar el modal
     const path = location.pathname;
     if (path.includes("products") || path.includes("productdelait")) {
       setActiveLink("productos");
@@ -101,22 +90,39 @@ export default function Header() {
           </Link>
         ))}
         {user ? (
-          <Link
-            to="/profile"
-            className={`${linkClass} ${
-              activeLink === "perfil"
-                ? "active-link"
-                : "text-white hover:text-white hover-link"
-            }`}
-            onClick={() => handleLinkClick("perfil")}
-          >
-            <User
-              className={`${
-                isMobile ? "h-5 w-5 mr-3 inline" : "h-4 w-4 mr-1"
+          <>
+            <Link
+              to="/profile"
+              className={`${linkClass} ${
+                activeLink === "perfil"
+                  ? "active-link"
+                  : "text-white hover:text-white hover-link"
               }`}
-            />
-            Perfil
-          </Link>
+              onClick={() => handleLinkClick("perfil")}
+            >
+              <User
+                className={`${
+                  isMobile ? "h-5 w-5 mr-3 inline" : "h-4 w-4 mr-1"
+                }`}
+              />
+              Perfil
+            </Link>
+
+            <Link
+              to="/cart"
+              className={`${linkClass} ${
+                activeLink === "carrito"
+                  ? "active-link"
+                  : "text-white hover:text-white hover-link"
+              }`}
+              onClick={() => handleLinkClick("carrito")}
+            >
+              <ShoppingCart
+                className={`${isMobile ? "h-5 w-5 mr-3 inline" : "h-5 w-5"}`}
+              />
+              {isMobile ? "Carrito" : ""}
+            </Link>
+          </>
         ) : (
           <button
             onClick={() => {
@@ -138,21 +144,6 @@ export default function Header() {
             Iniciar Sesión
           </button>
         )}
-
-        <Link
-          to="/cart"
-          className={`${linkClass} ${
-            activeLink === "carrito"
-              ? "active-link"
-              : "text-white hover:text-white hover-link"
-          }`}
-          onClick={() => handleLinkClick("carrito")}
-        >
-          <ShoppingCart
-            className={`${isMobile ? "h-5 w-5 mr-3 inline" : "h-5 w-5"}`}
-          />
-          {isMobile ? "Carrito" : ""}
-        </Link>
       </>
     );
   };
@@ -168,12 +159,10 @@ export default function Header() {
               </Link>
             </div>
 
-            {/* Menú en pantallas medianas o más grandes */}
             <nav className="hidden lg:flex items-center space-x-4">
               {renderNavLinks()}
             </nav>
 
-            {/* Icono del menú para abrir el menú lateral en móviles y tablets */}
             <button
               className="lg:hidden p-2 rounded-full text-white hover:text-white"
               onClick={handleSideMenuToggle}
@@ -185,18 +174,25 @@ export default function Header() {
         </div>
       </header>
 
-      {/* Menú lateral para pantallas pequeñas y medianas */}
       <div
-        className={`fixed inset-0 z-50 ${isSideMenuOpen ? "block" : "hidden"}`}
+        className={`fixed inset-0 z-50 transition-opacity duration-300 ${
+          isSideMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+        }`}
         role="dialog"
         aria-modal="true"
       >
         <div
-          className="fixed inset-0 bg-black bg-opacity-50"
+          className={`fixed inset-0 bg-black bg-opacity-50 transition-opacity duration-300 ${
+            isSideMenuOpen ? "opacity-100" : "opacity-0"
+          }`}
           aria-hidden="true"
           onClick={handleSideMenuToggle}
         ></div>
-        <nav className="fixed top-0 right-0 bottom-0 flex flex-col w-80 max-w-sm py-8 px-6 bg-black border-l overflow-y-auto">
+        <nav
+          className={`fixed top-0 right-0 bottom-0 flex flex-col w-80 max-w-sm py-8 px-6 bg-black transform transition-transform duration-300 ${
+            isSideMenuOpen ? "translate-x-0" : "translate-x-full"
+          }`}
+        >
           <div className="flex items-center justify-between mb-8">
             <h2 className="text-xl font-bold text-white">Menú</h2>
             <button

@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { ChevronRight } from 'lucide-react';
 import FilterSidebar from '../components/products/FilterSidebar';
-import ProductGrid from '../components/products/ProductGrid';
+import ProductCard from '../components/products/ProductCard';
 import { products } from '../components/products/data';
 
 export default function ProductPage() {
@@ -38,8 +37,7 @@ export default function ProductPage() {
             />
           </aside>
 
-          {/* Botón de filtros para pantallas pequeñas */}
-          <div className="lg:hidden mb-4">
+          <div className="lg:hidden">
             <button
               onClick={() => setShowFilters(!showFilters)}
               className="w-full bg-[#201c1c] hover:bg-blue-700 text-white py-2 px-4 rounded-md flex items-center justify-center"
@@ -60,10 +58,10 @@ export default function ProductPage() {
             )}
           </div>
 
-          {/* Contenido principal */}
-          <main className="w-full lg:w-3/4">
-            <ProductGrid products={filteredProducts} />
-          </main>
+          <section className="w-full lg:w-3/4">
+            <h2 className="text-2xl font-semibold mb-4 text-[#201c1c]">Productos</h2>
+            <ProductCard products={filteredProducts} />
+          </section>
         </div>
       </div>
     </div>

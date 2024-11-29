@@ -10,12 +10,10 @@ export default function Home() {
   return (
     <div>
       <HeroSection/>
-      <div className='max-w-7xl mx-auto'>
-        <SearchBar />
-        <FeaturedProducts />
-        <TestimonialSection />
-        <Features />
-      </div>
+      <SearchBar />
+      <FeaturedProducts />
+      <TestimonialSection />
+      <Features />
     </div>
   );
 }

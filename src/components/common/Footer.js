@@ -39,7 +39,7 @@ export default function Footer() {
             </div>
           </div>
           <div className="mt-8 pt-8 border-t border-gray-700 text-center">
-            <p>&copy; 2024 MotoPartes. Todos los derechos reservados.</p>
+            <p>&copy; 2024 NKS. Todos los derechos reservados.</p>
           </div>
         </div>
       </footer>

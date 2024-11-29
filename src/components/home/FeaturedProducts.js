@@ -1,200 +1,158 @@
-import { useState } from "react"
+import React, { useState, useEffect } from "react";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "../../firebase/firebase";
+import { useNavigate } from "react-router-dom"; // Importa useNavigate
 
-export default function Component() {
-  const [openDialog, setOpenDialog] = useState(false)
-  const [selectedProduct, setSelectedProduct] = useState(null)
+export default function ProductList() {
+  const [openDialog, setOpenDialog] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const products = [
-    {
-      id: 1,
-      name: "FILTRO DE AIRE TIPO ORIGINAL DE ALTO FLUJO BAJAJ BOXER CT 100",
-      reference: "C1A2578",
-      originalPrice: "16.000",
-      salePrice: "12.000",
-      image: "/placeholder.svg?height=200&width=200",
-      applications: [
-        { brand: "BAJAJ", description: "Boxer CT 100" },
-        { brand: "BAJAJ", description: "Boxer BM 100" },
-        { brand: "BAJAJ", description: "Boxer S" },
-      ]
-    },
-    {
-      id: 2,
-      name: "FILTRO DE AIRE PARA HONDA CBF150",
-      reference: "H2B3689",
-      originalPrice: "18.000",
-      salePrice: "14.500",
-      image: "/placeholder.svg?height=200&width=200",
-      applications: [
-        { brand: "HONDA", description: "CBF150" },
-        { brand: "HONDA", description: "CB150 Invicta" },
-      ]
-    },
-    {
-      id: 3,
-      name: "FILTRO DE AIRE YAMAHA FZ16",
-      reference: "Y3C4790",
-      originalPrice: "20.000",
-      salePrice: "16.000",
-      image: "/placeholder.svg?height=200&width=200",
-      applications: [
-        { brand: "YAMAHA", description: "FZ16" },
-        { brand: "YAMAHA", description: "FZ25" },
-      ]
-    },
-    {
-      id: 4,
-      name: "FILTRO DE AIRE SUZUKI GN125",
-      reference: "S4D5801",
-      originalPrice: "15.000",
-      salePrice: "11.500",
-      image: "/placeholder.svg?height=200&width=200",
-      applications: [
-        { brand: "SUZUKI", description: "GN125" },
-        { brand: "SUZUKI", description: "EN125" },
-      ]
-    },
-    {
-      id: 5,
-      name: "FILTRO DE AIRE KAWASAKI NINJA 300",
-      reference: "K5E6912",
-      originalPrice: "22.000",
-      salePrice: "18.000",
-      image: "/placeholder.svg?height=200&width=200",
-      applications: [
-        { brand: "KAWASAKI", description: "Ninja 300" },
-        { brand: "KAWASAKI", description: "Z300" },
-      ]
-    },
-    {
-      id: 6,
-      name: "FILTRO DE AIRE KTM DUKE 200",
-      reference: "T6F7023",
-      originalPrice: "21.000",
-      salePrice: "17.500",
-      image: "/placeholder.svg?height=200&width=200",
-      applications: [
-        { brand: "KTM", description: "Duke 200" },
-        { brand: "KTM", description: "RC 200" },
-      ]
-    },
-    {
-      id: 7,
-      name: "FILTRO DE AIRE TVS APACHE RTR 160",
-      reference: "V7G8134",
-      originalPrice: "17.000",
-      salePrice: "13.500",
-      image: "/placeholder.svg?height=200&width=200",
-      applications: [
-        { brand: "TVS", description: "Apache RTR 160" },
-        { brand: "TVS", description: "Apache RTR 180" },
-      ]
-    },
-    {
-      id: 8,
-      name: "FILTRO DE AIRE HERO SPLENDOR",
-      reference: "H8H9245",
-      originalPrice: "14.000",
-      salePrice: "10.500",
-      image: "/placeholder.svg?height=200&width=200",
-      applications: [
-        { brand: "HERO", description: "Splendor" },
-        { brand: "HERO", description: "Passion Pro" },
-      ]
-    },
-    {
-      id: 9,
-      name: "FILTRO DE AIRE ROYAL ENFIELD CLASSIC 350",
-      reference: "R9I0356",
-      originalPrice: "19.000",
-      salePrice: "15.500",
-      image: "/placeholder.svg?height=200&width=200",
-      applications: [
-        { brand: "ROYAL ENFIELD", description: "Classic 350" },
-        { brand: "ROYAL ENFIELD", description: "Meteor 350" },
-      ]
-    },
-    {
-      id: 10,
-      name: "FILTRO DE AIRE PULSAR NS200",
-      reference: "P0J1467",
-      originalPrice: "18.500",
-      salePrice: "14.000",
-      image: "/placeholder.svg?height=200&width=200",
-      applications: [
-        { brand: "BAJAJ", description: "Pulsar NS200" },
-        { brand: "BAJAJ", description: "Pulsar RS200" },
-      ]
-    },
-  ]
+  const navigate = useNavigate(); // Inicializa useNavigate
+
+  useEffect(() => {
+    const loadProductsFromFirestore = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, "products"));
+        const productsList = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setProducts(productsList);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error al obtener productos de Firestore:", error);
+        setLoading(false);
+      }
+    };
+
+    loadProductsFromFirestore();
+  }, []);
+
+  const ProductCard = ({ product, isLoading }) => (
+    <div
+      className="bg-white rounded-lg shadow-md overflow-hidden transform sm:scale-90 md:scale-100 transition-all duration-300 ease-in-out"
+      style={{ cursor: "pointer" }} // Aquí agregamos la propiedad cursor: pointer
+      onClick={() => {
+        if (!isLoading) {
+          // Redirige a la página de detalles del producto usando el id
+          navigate(`/productdetail/${product.id}`);
+        }
+      }}
+    >
+      <div className="p-4 text-center">
+        <h2 className="font-medium text-2xl sm:text-xl md:text-2xl mb-2 h-14 line-clamp-2">
+          {isLoading ? (
+            <div className="bg-gray-300 h-6 w-3/4 mx-auto mb-2 rounded animate-pulse"></div>
+          ) : (
+            <span className="text-3xl sm:text-2xl md:text-2xl">{product.title}</span>
+          )}
+        </h2>
+        <div className="w-3/4 mx-auto sm:w-full sm:mx-0 aspect-square relative bg-gray-200 rounded-lg overflow-hidden">
+          {isLoading ? (
+            <div className="w-full h-full bg-gray-300 animate-pulse"></div>
+          ) : (
+            <img
+              src={product.thumbnail}
+              alt={product.title}
+              className="w-full h-full object-cover"
+            />
+          )}
+        </div>
+        <div className="mt-4">
+          {isLoading ? (
+            <>
+              <div className="bg-gray-300 h-4 w-1/2 mx-auto mb-2 rounded animate-pulse"></div>
+              <div className="flex items-center justify-center gap-2 mb-4">
+                <div className="bg-gray-300 h-4 w-1/4 rounded animate-pulse"></div>
+                <div className="bg-gray-300 h-6 w-1/4 rounded animate-pulse"></div>
+              </div>
+            </>
+          ) : (
+            <>
+              <p className="text-sm mb-1">REFERENCIA {product.reference}</p>
+              <div className="flex items-center justify-center gap-2 mb-4">
+                <span className="text-gray-500 line-through">${product.price}</span>
+                <span className="text-xl font-bold">${product.salePrice}</span>
+              </div>
+            </>
+          )}
+          
+          {/* Redirige cuando no esté cargando */}
+          <button
+            className="w-full mb-2 bg-red-50 text-red-600 text-sm border border-red-600 rounded py-1.5 hover:bg-red-50 disabled:opacity-50 disabled:cursor-not-allowed"
+            onClick={(e) => {
+              e.stopPropagation(); 
+              if (!isLoading) {
+                setSelectedProduct(product);
+                setOpenDialog(true);
+              }
+            }}
+            disabled={isLoading}
+          >
+            VER TODAS LAS APLICACIONES
+          </button>
+
+          <button 
+            className="w-full bg-red-600 text-white rounded py-1.5 hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed"
+            disabled={isLoading}
+          >
+            AÑADIR AL CARRITO
+          </button>
+        </div>
+      </div>
+    </div>
+  );
 
   return (
     <div className="p-6">
-      <h2 className="text-4xl font-bold text-center mb-8">
+      <h2 className="text-4xl sm:text-5xl font-bold text-center mb-8">
         <span className="text-red-600">LO MEJOR EN</span>
         <br />
-        <span className="text-white inline-block mt-2" style={{ WebkitTextStroke: '1px red' }}>
+        <span className="text-white inline-block mt-2" style={{ WebkitTextStroke: "1px red" }}>
           FILTROS DE AIRE
         </span>
       </h2>
-      
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {products.map((product) => (
-          <div key={product.id} className="bg-white rounded-lg shadow-md overflow-hidden">
-            <div className="p-4 text-center">
-              <h2 className="font-medium text-sm mb-2 line-clamp-2">{product.name}</h2>
-              <img
-                src={product.image}
-                alt={product.name}
-                className="w-full h-48 object-contain mx-auto"
-              />
-              <div className="mt-4">
-                <p className="text-sm mb-1">REFERENCIA {product.reference}</p>
-                <div className="flex items-center justify-center gap-2 mb-4">
-                  <span className="text-gray-500 line-through">${product.originalPrice}</span>
-                  <span className="text-xl font-bold">${product.salePrice}</span>
-                </div>
-                
-                <button 
-                  className="w-full mb-2 text-red-600 text-sm border border-red-600 rounded py-1.5 hover:bg-red-50"
-                  onClick={() => {
-                    setSelectedProduct(product)
-                    setOpenDialog(true)
-                  }}
-                >
-                  VER TODAS LAS APLICACIONES
-                </button>
 
-                <button className="w-full bg-red-600 text-white rounded py-1.5 hover:bg-red-700">
-                  AÑADIR AL CARRITO
-                </button>
-              </div>
-            </div>
-          </div>
-        ))}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {loading
+          ? Array(8).fill().map((_, index) => (
+              <ProductCard key={index} product={{}} isLoading={true} />
+            ))
+          : products.map((product) => (
+              <ProductCard key={product.id} product={product} isLoading={false} />
+            ))}
       </div>
 
       {openDialog && selectedProduct && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-lg p-6 max-w-md w-full">
-            <h2 className="text-xl font-bold mb-4">Aplicaciones - {selectedProduct.reference}</h2>
-            <table className="w-full">
-              <thead>
-                <tr>
-                  <th className="text-left">MARCA</th>
-                  <th className="text-left">DESCRIPCIÓN</th>
-                </tr>
-              </thead>
-              <tbody>
-                {selectedProduct.applications.map((app, index) => (
-                  <tr key={index}>
-                    <td className="font-medium">{app.brand}</td>
-                    <td>{app.description}</td>
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-lg p-6 max-w-5xl w-full overflow-auto">
+            <h2 className="text-xl font-bold mb-4">Vehículos Compatibles - {selectedProduct.reference}</h2>
+            <div className="overflow-x-auto">
+              <table className="min-w-full table-auto border-collapse border border-gray-700">
+                <thead className="bg-gray-100">
+                  <tr>
+                    <th className="py-2 px-4 text-left font-semibold text-gray-black">MARCA</th>
+                    <th className="py-2 px-4 text-left font-semibold text-gray-black">MODELO</th>
+                    <th className="py-2 px-4 text-left font-semibold text-gray-black">AÑO</th>
+                    <th className="py-2 px-4 text-left font-semibold text-gray-black">TAMAÑO MOTOR</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-            <button 
+                </thead>
+                <tbody>
+                  {Array.isArray(selectedProduct.compatibleVehicles) && selectedProduct.compatibleVehicles.map((vehicle, index) => (
+                    <tr key={index} className="border-t">
+                      <td className="py-2 px-4">{vehicle.brand}</td>
+                      <td className="py-2 px-4">{vehicle.model}</td>
+                      <td className="py-2 px-4">{vehicle.year}</td>
+                      <td className="py-2 px-4">{vehicle.engineSize}cc</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            <button
               className="mt-4 w-full bg-red-600 text-white rounded py-1.5 hover:bg-red-700"
               onClick={() => setOpenDialog(false)}
             >
@@ -204,5 +162,5 @@ export default function Component() {
         </div>
       )}
     </div>
-  )
+  );
 }

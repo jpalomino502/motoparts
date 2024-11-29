@@ -23,8 +23,8 @@ const FilterSearch = () => {
   }, [])
 
   return (
-    <div className="mx-auto px-4 py-4">
-      <div className="bg-red-600 rounded-lg shadow-md overflow-hidden" ref={formRef}>
+    <div className="mx-auto">
+      <div className="bg-gradient-to-r from-[#ff0000] to-[#d70000] rounded-lg shadow-md overflow-hidden" ref={formRef}>
         <div className="p-4 sm:p-6">
           <h2 className="text-white text-lg sm:text-xl font-bold text-center mb-4">
             ENCUENTRA EL FILTRO IDEAL PARA TU MOTO
@@ -43,7 +43,7 @@ const FilterSearch = () => {
             </div>
             <button
               onClick={toggleExpand}
-              className="bg-white text-red-600 p-2 rounded-md hover:bg-red-100 transition-colors duration-300 ease-in-out"
+              className="bg-white text-black p-2 rounded-md hover:bg-gray-100 transition-colors duration-300 ease-in-out"
               aria-label="Búsqueda avanzada"
               title="Búsqueda avanzada"
             >
@@ -69,7 +69,7 @@ const FilterSearch = () => {
         </div>
       </div>
       <div className="mt-2">
-        <button className="w-full bg-black text-white py-3 px-4 rounded-md hover:bg-red-700 transition-colors duration-300 ease-in-out text-sm font-semibold">
+        <button className="w-full bg-black text-white py-3 px-4 rounded-md hover:bg-[#121212] transition-colors duration-300 ease-in-out text-sm font-semibold">
           BUSCAR FILTRO
         </button>
       </div>

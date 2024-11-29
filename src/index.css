@@ -2,12 +2,25 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --header-height: 64px;
+}
+
+header {
+  height: var(--header-height);
+}
+
+main {
+  margin-top: var(--header-height);
+}
+
 /* Header */
 .active-link,
 .hover-link:hover {
   position: relative;
   color: white;
   font-weight: bold;
+  transition: color 0.7s ease-in-out;
 }
 
 .active-link::after,
@@ -19,6 +32,7 @@
   background-color: #ff0000;
   bottom: -14px;
   left: 0;
+  transition: bottom 0.7s ease-in-out, height 0.7s ease-in-out; 
 }
 
 @media (max-width: 768px) {
@@ -28,20 +42,6 @@
   }
 }
 
-:root {
-  --header-height: 64px; /* Ajusta según la altura real del Header */
-}
-
-header {
-  height: var(--header-height);
-}
-
-main {
-  margin-top: var(--header-height);
-}
-
-
-/*Hero*/
 
 
   
