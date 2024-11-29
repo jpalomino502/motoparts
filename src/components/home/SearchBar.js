@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react"; 
 import { db } from "../../firebase/firebase";
 import { collection, getDocs } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
@@ -17,11 +17,20 @@ const FilterSearch = () => {
   const [selectedModel, setSelectedModel] = useState("");
   const [selectedEngineSize, setSelectedEngineSize] = useState("");
   const [selectedYear, setSelectedYear] = useState("");
+  const [filteredOptions, setFilteredOptions] = useState({
+    models: [],
+    engineSizes: [],
+    years: [],
+    references: [],
+  });
+
+  const [productData, setProductData] = useState([]);
   const [isMobile, setIsMobile] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
 
   const navigate = useNavigate();
 
+  // Handle responsiveness
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 1024);
@@ -33,37 +42,75 @@ const FilterSearch = () => {
     };
   }, []);
 
+  // Fetch data from Firestore
   useEffect(() => {
     const fetchData = async () => {
       const querySnapshot = await getDocs(collection(db, "products"));
-      const productData = querySnapshot.docs.map((doc) => doc.data());
-      const brands = new Set();
-      const models = new Set();
-      const engineSizes = new Set();
-      const years = new Set();
-      const references = new Set();
+      const data = querySnapshot.docs.map((doc) => doc.data());
+      setProductData(data);
 
-      productData.forEach((product) => {
+      const brands = new Set();
+      data.forEach((product) => {
         product.compatibleVehicles.forEach((vehicle) => {
           brands.add(vehicle.brand);
-          models.add(vehicle.model);
-          engineSizes.add(vehicle.engineSize);
-          years.add(vehicle.year);
         });
-        references.add(product.reference);
       });
 
-      setFilters({
+      setFilters((prev) => ({
+        ...prev,
         brands: [...brands],
-        models: [...models],
-        engineSizes: [...engineSizes],
-        years: [...years],
-        references: [...references],
-      });
+      }));
     };
 
     fetchData();
   }, []);
+
+  // Filter dependent options dynamically
+  useEffect(() => {
+    if (!productData.length) return;
+
+    const models = new Set();
+    const engineSizes = new Set();
+    const years = new Set();
+    const references = new Set();
+
+    productData.forEach((product) => {
+      product.compatibleVehicles.forEach((vehicle) => {
+        if (!selectedBrand || vehicle.brand === selectedBrand) {
+          models.add(vehicle.model);
+        }
+        if (
+          (!selectedBrand || vehicle.brand === selectedBrand) &&
+          (!selectedModel || vehicle.model === selectedModel)
+        ) {
+          engineSizes.add(vehicle.engineSize);
+        }
+        if (
+          (!selectedBrand || vehicle.brand === selectedBrand) &&
+          (!selectedModel || vehicle.model === selectedModel) &&
+          (!selectedEngineSize || vehicle.engineSize === selectedEngineSize)
+        ) {
+          years.add(vehicle.year);
+        }
+      });
+
+      // References are not dependent on compatibleVehicles filtering
+      if (
+        (!selectedBrand || product.compatibleVehicles.some((v) => v.brand === selectedBrand)) &&
+        (!selectedModel ||
+          product.compatibleVehicles.some((v) => v.model === selectedModel))
+      ) {
+        references.add(product.reference);
+      }
+    });
+
+    setFilteredOptions({
+      models: [...models],
+      engineSizes: [...engineSizes],
+      years: [...years],
+      references: [...references],
+    });
+  }, [selectedBrand, selectedModel, selectedEngineSize, productData]);
 
   const handleSearch = () => {
     const queryParams = new URLSearchParams();
@@ -122,7 +169,10 @@ const FilterSearch = () => {
                       }}
                     >
                       <option value="">{`Selecciona ${filterLabels[filterKey]}`}</option>
-                      {filters[filterKey].map((option, index) => (
+                      {(filterKey === "brands"
+                        ? filters[filterKey]
+                        : filteredOptions[filterKey]
+                      ).map((option, index) => (
                         <option key={index} value={option}>
                           {option}
                         </option>
