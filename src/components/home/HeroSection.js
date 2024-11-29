@@ -101,7 +101,7 @@ export default function HeroSection() {
         <Slider ref={sliderRef} {...settings}>
           {heroImages.map((image, index) => (
             <div key={index} className="relative w-full">
-              <div className="pb-[40.9%]">
+              <div className="pb-[40.5%]">
                 <img
                   src={image}
                   alt={`Imagen del carrusel ${index + 1}`}

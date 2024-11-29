@@ -25,17 +25,6 @@ export default function ProductPage() {
   return (
     <div className="min-h-screen bg-gray-100 ">
       <div className="container mx-auto px-4 py-2 max-w-7xl mx-auto">
-        <nav className="text-sm mb-6">
-          <ol className="list-none p-0 inline-flex">
-            <li className="flex items-center">
-              <a href="/" className="text-[#ff0000] hover:text-[#d70000]">Inicio</a>
-              <ChevronRight className="h-4 w-4 mx-2" />
-            </li>
-            <li className="flex items-center">
-              <a href="/products" className="text-[#ff0000] hover:text-[#d70000]">Productos</a>
-            </li>
-          </ol>
-        </nav>
         <h1 className="text-3xl font-bold mb-8 text-[#201c1c]">Productos NKS</h1>
         <div className="flex flex-col lg:flex-row gap-8">
           <aside className="w-full lg:w-1/4 hidden lg:block">

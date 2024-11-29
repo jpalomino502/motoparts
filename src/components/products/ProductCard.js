@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 export default function ProductCard({ product }) {
   return (
-    <Link to="/productdetail" className="block"> {/* Enlace redirige a la página de detalle */}
+    <Link to="/productdelait" className="block"> {/* Enlace redirige a la página de detalle */}
       <div className="bg-white rounded-lg shadow-md overflow-hidden">
         <div className="p-4 text-center">
           <h2 className="font-medium text-sm mb-2 line-clamp-2">{product.name}</h2>

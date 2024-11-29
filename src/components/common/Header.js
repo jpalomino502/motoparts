@@ -23,7 +23,9 @@ export default function Header() {
   useEffect(() => {
     window.scrollTo(0, 0);
     const path = location.pathname;
-    if (path.includes("products")) {
+
+    // Activar la ruta correcta dependiendo de la URL
+    if (path.includes("products") || path.includes("productdelait")) {
       setActiveLink("productos");
     } else if (path.includes("cart")) {
       setActiveLink("carrito");
@@ -40,7 +42,21 @@ export default function Header() {
 
   const handleModalClose = () => {
     setLoginModalOpen(false);
-    setActiveLink("");
+    // Mantener la ruta activa después de cerrar el modal
+    const path = location.pathname;
+    if (path.includes("products") || path.includes("productdelait")) {
+      setActiveLink("productos");
+    } else if (path.includes("cart")) {
+      setActiveLink("carrito");
+    } else if (path.includes("profile")) {
+      setActiveLink("perfil");
+    } else if (path.includes("about")) {
+      setActiveLink("about");
+    } else if (path.includes("contact")) {
+      setActiveLink("contact");
+    } else {
+      setActiveLink("");
+    }
   };
 
   const handleSideMenuToggle = () => {
@@ -152,12 +168,14 @@ export default function Header() {
               </Link>
             </div>
 
-            <nav className="hidden md:flex items-center space-x-4">
+            {/* Menú en pantallas medianas o más grandes */}
+            <nav className="hidden lg:flex items-center space-x-4">
               {renderNavLinks()}
             </nav>
 
+            {/* Icono del menú para abrir el menú lateral en móviles y tablets */}
             <button
-              className="md:hidden p-2 rounded-full text-white hover:text-white"
+              className="lg:hidden p-2 rounded-full text-white hover:text-white"
               onClick={handleSideMenuToggle}
               aria-label="Abrir menú"
             >
@@ -166,6 +184,8 @@ export default function Header() {
           </div>
         </div>
       </header>
+
+      {/* Menú lateral para pantallas pequeñas y medianas */}
       <div
         className={`fixed inset-0 z-50 ${isSideMenuOpen ? "block" : "hidden"}`}
         role="dialog"
