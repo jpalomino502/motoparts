@@ -150,29 +150,30 @@ export default function Header() {
 
   return (
     <>
-      <header className="bg-black shadow-md fixed top-0 left-0 right-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center">
-              <Link to="/" onClick={() => handleLinkClick("")}>
-                <img src={logo} alt="Logo" className="h-12 w-auto" />
-              </Link>
-            </div>
+<header className="bg-black shadow-md fixed top-0 left-0 right-0 z-50">
+  <div className="w-full mx-auto px-4 sm:px-6 lg:px-8 bg-black"> {/* Cambié max-w-7xl a w-full */}
+    <div className="flex items-center justify-between h-20">
+      <div className="flex items-center">
+        <Link to="/" onClick={() => handleLinkClick("")}>
+          <img src={logo} alt="Logo" className="h-16 w-auto" />
+        </Link>
+      </div>
 
-            <nav className="hidden lg:flex items-center space-x-4">
-              {renderNavLinks()}
-            </nav>
+      <nav className="hidden lg:flex items-center space-x-4">
+        {renderNavLinks()}
+      </nav>
 
-            <button
-              className="lg:hidden p-2 rounded-full text-white hover:text-white"
-              onClick={handleSideMenuToggle}
-              aria-label="Abrir menú"
-            >
-              <Menu className="h-6 w-6" />
-            </button>
-          </div>
-        </div>
-      </header>
+      <button
+        className="lg:hidden p-2 rounded-full text-white hover:text-white"
+        onClick={handleSideMenuToggle}
+        aria-label="Abrir menú"
+      >
+        <Menu className="h-6 w-6" />
+      </button>
+    </div>
+  </div>
+</header>
+
 
       <div
         className={`fixed inset-0 z-50 transition-opacity duration-300 ${

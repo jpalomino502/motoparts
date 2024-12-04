@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"; 
+import React, { useState, useEffect } from "react";
 import { db } from "../../firebase/firebase";
 import { collection, getDocs } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
@@ -96,7 +96,8 @@ const FilterSearch = () => {
 
       // References are not dependent on compatibleVehicles filtering
       if (
-        (!selectedBrand || product.compatibleVehicles.some((v) => v.brand === selectedBrand)) &&
+        (!selectedBrand ||
+          product.compatibleVehicles.some((v) => v.brand === selectedBrand)) &&
         (!selectedModel ||
           product.compatibleVehicles.some((v) => v.model === selectedModel))
       ) {
@@ -116,7 +117,8 @@ const FilterSearch = () => {
     const queryParams = new URLSearchParams();
     if (selectedBrand) queryParams.append("brands", selectedBrand);
     if (selectedModel) queryParams.append("models", selectedModel);
-    if (selectedEngineSize) queryParams.append("engineSizes", selectedEngineSize);
+    if (selectedEngineSize)
+      queryParams.append("engineSizes", selectedEngineSize);
     if (selectedYear) queryParams.append("years", selectedYear);
     navigate(`/products?${queryParams.toString()}`);
   };
@@ -130,7 +132,7 @@ const FilterSearch = () => {
   };
 
   return (
-    <div className="mx-auto">
+    <div className="mx-auto mb-4">
       <div className="bg-gradient-to-r from-[#ff0000] to-[#d70000] rounded-lg shadow-md overflow-hidden">
         <div className="p-4 sm:p-6">
           <div
@@ -140,60 +142,97 @@ const FilterSearch = () => {
             onClick={() => isMobile && setShowFilters(!showFilters)}
           >
             <span>Encuentra el filtro ideal para tu moto</span>
-            {isMobile && <ChevronDown className={`transform ${showFilters ? "rotate-180" : ""}`} />}
+            {isMobile && (
+              <ChevronDown
+                className={`transform ${showFilters ? "rotate-180" : ""}`}
+              />
+            )}
           </div>
 
           {(showFilters || !isMobile) && (
             <>
               <div className="grid grid-cols-1 sm:grid-cols-2 mt-4 lg:grid-cols-3 gap-4">
-                {Object.keys(filters).map((filterKey) => (
-                  <div key={filterKey} className="relative">
-                    <select
-                      className="w-full appearance-none bg-white text-gray-700 py-2 px-3 pr-8 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-red-400 transition-all duration-300 ease-in-out"
-                      value={
-                        filterKey === "brands"
-                          ? selectedBrand
-                          : filterKey === "models"
-                          ? selectedModel
-                          : filterKey === "engineSizes"
-                          ? selectedEngineSize
-                          : filterKey === "years"
-                          ? selectedYear
-                          : ""
-                      }
-                      onChange={(e) => {
-                        if (filterKey === "brands") setSelectedBrand(e.target.value);
-                        if (filterKey === "models") setSelectedModel(e.target.value);
-                        if (filterKey === "engineSizes") setSelectedEngineSize(e.target.value);
-                        if (filterKey === "years") setSelectedYear(e.target.value);
-                      }}
-                    >
-                      <option value="">{`Selecciona ${filterLabels[filterKey]}`}</option>
-                      {(filterKey === "brands"
-                        ? filters[filterKey]
-                        : filteredOptions[filterKey]
-                      ).map((option, index) => (
-                        <option key={index} value={option}>
-                          {option}
-                        </option>
-                      ))}
-                    </select>
-                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                      <svg
-                        className="fill-current h-4 w-4"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 20 20"
-                      >
-                        <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                      </svg>
-                    </div>
-                  </div>
-                ))}
-              </div>
+                {Object.keys(filters).map((filterKey, index) => {
+                  const isDisabled =
+                    filterKey === "models" && !selectedBrand
+                      ? !isMobile
+                      : filterKey === "engineSizes" &&
+                        (!selectedBrand || !selectedModel)
+                      ? !isMobile
+                      : filterKey === "years" &&
+                        (!selectedBrand ||
+                          !selectedModel ||
+                          !selectedEngineSize)
+                      ? !isMobile
+                      : false;
 
+                  const isVisible = isMobile
+                    ? filterKey === "brands" ||
+                      (filterKey === "models" && selectedBrand) ||
+                      (filterKey === "engineSizes" && selectedModel) ||
+                      (filterKey === "years" && selectedEngineSize)
+                    : true;
+
+                  return (
+                    isVisible && (
+                      <div key={filterKey} className="relative">
+                        <select
+                          className={`w-full appearance-none bg-white text-gray-700 py-2 px-3 pr-8 rounded-md text-sm ${
+                            isDisabled
+                              ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+                              : "focus:outline-none focus:ring-2 focus:ring-red-400 transition-all duration-300 ease-in-out"
+                          }`}
+                          value={
+                            filterKey === "brands"
+                              ? selectedBrand
+                              : filterKey === "models"
+                              ? selectedModel
+                              : filterKey === "engineSizes"
+                              ? selectedEngineSize
+                              : filterKey === "years"
+                              ? selectedYear
+                              : ""
+                          }
+                          disabled={isDisabled}
+                          onChange={(e) => {
+                            if (filterKey === "brands")
+                              setSelectedBrand(e.target.value);
+                            if (filterKey === "models")
+                              setSelectedModel(e.target.value);
+                            if (filterKey === "engineSizes")
+                              setSelectedEngineSize(e.target.value);
+                            if (filterKey === "years")
+                              setSelectedYear(e.target.value);
+                          }}
+                        >
+                          <option value="">{`Selecciona ${filterLabels[filterKey]}`}</option>
+                          {(filterKey === "brands"
+                            ? filters[filterKey]
+                            : filteredOptions[filterKey]
+                          ).map((option, index) => (
+                            <option key={index} value={option}>
+                              {option}
+                            </option>
+                          ))}
+                        </select>
+                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                          <svg
+                            className="fill-current h-4 w-4"
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 20 20"
+                          >
+                            <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                          </svg>
+                        </div>
+                      </div>
+                    )
+                  );
+                })}
+              </div>
+              ;
               <button
                 onClick={handleSearch}
-                className="w-full mt-4 bg-black text-white py-3 px-4 rounded-md hover:bg-[#121212] transition-colors duration-300 ease-in-out text-sm font-semibold"
+                className="w-full  bg-black text-white py-3 px-4 rounded-md hover:bg-[#121212] transition-colors duration-300 ease-in-out text-sm font-semibold"
               >
                 Buscar filtro
               </button>

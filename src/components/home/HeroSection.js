@@ -13,9 +13,7 @@
 //     const loadImagesFromFirestore = async () => {
 //       try {
 //         const querySnapshot = await getDocs(collection(db, 'hero'));
-        
 //         const images = querySnapshot.docs.map((doc) => doc.data().url);
-        
 //         setHeroImages(images);
 //         setImagesLoaded(true);
 //       } catch (error) {
@@ -82,7 +80,7 @@
 //                 <img
 //                   src={image}
 //                   alt={`Imagen del carrusel ${index + 1}`}
-//                   className="absolute inset-0 w-full h-full "
+//                   className="absolute inset-0 w-full h-full rounded-lg"
 //                 />
 //               </div>
 //             </div>

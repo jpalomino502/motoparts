@@ -9,8 +9,8 @@ export default function Home() {
 
   return (
     <div>
-      <HeroSection/>
       <SearchBar />
+      <HeroSection/>
       <FeaturedProducts />
       <TestimonialSection />
       <Features />

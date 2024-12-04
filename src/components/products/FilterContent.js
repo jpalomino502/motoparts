@@ -31,10 +31,10 @@ export default function FilterContent({
   };
 
   const sectionData = {
-    brands: brands,
-    models: models,
-    engineSizes: engineSizes,
-    years: years
+    brands,
+    models,
+    engineSizes,
+    years
   };
 
   const selectedData = {
@@ -49,6 +49,13 @@ export default function FilterContent({
     models: setSelectedModels,
     engineSizes: setSelectedEngineSizes,
     years: setSelectedYears
+  };
+
+  const sectionLabels = {
+    brands: "Marcas",
+    models: "Modelos",
+    engineSizes: "Cilindraje",
+    years: "Años"
   };
 
   return (
@@ -72,25 +79,28 @@ export default function FilterContent({
         {showDiscounts ? "Mostrar todos los productos" : "Ver solo ofertas"}
       </button>
 
-      {[{ id: 'brands', label: 'Marcas' }, { id: 'models', label: 'Modelos' }, { id: 'engineSizes', label: 'Cilindraje' }, { id: 'years', label: 'Años' }].map(({ id, label }) => (
+      {Object.entries(sectionData).map(([id, data]) => (
         <div key={id} className="border-b border-gray-200 pb-2">
           <button
             onClick={() => toggleSection(id)}
             className="flex justify-between items-center w-full py-2 text-left text-sm font-medium text-gray-700"
           >
-            <span>{label}</span>
+            <span>{sectionLabels[id]}</span>
             <ChevronDown className={`w-5 h-5 transition-transform ${expandedSections[id] ? 'transform rotate-180' : ''}`} />
           </button>
           {expandedSections[id] && (
             <div className="mt-2 space-y-2">
-              {sectionData[id].map((item) => (
+              {data.map((item) => (
                 <label key={item} className="flex items-center space-x-2">
                   <input
                     type="checkbox"
-                    checked={selectedData[id].includes(item)}
+                    checked={Array.isArray(selectedData[id]) && selectedData[id].includes(item)}
                     onChange={() => {
                       const setFunction = setSelectedData[id];
-                      setFunction(prev => prev.includes(item) ? prev.filter(i => i !== item) : [...prev, item]);
+                      setFunction(prev => {
+                        const array = Array.isArray(prev) ? prev : [];
+                        return array.includes(item) ? array.filter(i => i !== item) : [...array, item];
+                      });
                     }}
                     className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                   />
@@ -104,3 +114,4 @@ export default function FilterContent({
     </div>
   );
 }
+
