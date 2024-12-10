@@ -36,7 +36,8 @@ export default function Header() {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > lastScrollY) {
+      // No ocultar el header cuando estamos al inicio de la página
+      if (window.scrollY > lastScrollY && window.scrollY > 0) {
         // Scrolling down
         setIsHeaderVisible(false);
       } else {

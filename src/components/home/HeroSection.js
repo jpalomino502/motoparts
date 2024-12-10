@@ -10,6 +10,7 @@ export default function HeroSection() {
   const [heroImages, setHeroImages] = useState([]);
   const sliderRef = useRef(null);
   const [imagesLoaded, setImagesLoaded] = useState(false);
+  const [firstImageLoaded, setFirstImageLoaded] = useState(false);
 
   useEffect(() => {
     const fetchImages = async () => {
@@ -26,12 +27,16 @@ export default function HeroSection() {
     fetchImages();
   }, []);
 
+  // Pre-cargar imágenes en segundo plano
   const preloadImages = (images) => {
-    const promises = images.map((src) => {
+    const promises = images.map((src, index) => {
       return new Promise((resolve) => {
         const img = new Image();
         img.src = src;
-        img.onload = resolve;
+        img.onload = () => {
+          if (index === 0) setFirstImageLoaded(true); // Marca la primera imagen como cargada
+          resolve();
+        };
         img.onerror = resolve;
       });
     });
@@ -41,12 +46,14 @@ export default function HeroSection() {
     });
   };
 
+  // Añadir links de pre-carga para optimizar la carga
   const addPreloadLinks = (images) => {
-    images.forEach((image) => {
+    images.forEach((image, index) => {
       const link = document.createElement('link');
       link.rel = 'preload';
       link.href = image;
       link.as = 'image';
+      link.fetchpriority = index === 0 ? 'high' : 'auto'; // Prioriza la carga de la primera imagen
       document.head.appendChild(link);
     });
   };
@@ -81,7 +88,8 @@ export default function HeroSection() {
     ],
   };
 
-  if (!imagesLoaded) {
+  // Mostrar el cargador de imágenes hasta que la primera imagen esté cargada
+  if (!firstImageLoaded) {
     return <SkeletonLoader />;
   }
 
@@ -98,19 +106,28 @@ export default function HeroSection() {
                   className="w-full h-auto rounded-lg"
                   width="1920"
                   height="1080"
-                  loading={index === 0 ? "eager" : "lazy"} // Prioriza la primera imagen
+                  loading={index === 0 ? 'eager' : 'lazy'}
+                  fetchpriority={index === 0 ? 'high' : 'auto'}
                 />
               </div>
             ))}
           </Slider>
         </Suspense>
         <div className="hidden lg:flex absolute top-1/2 left-[-180px] transform -translate-y-1/2 z-20">
-          <button className="p-4 rounded-full bg-white" onClick={handlePrev}>
+          <button
+            className="p-4 rounded-full bg-white"
+            onClick={handlePrev}
+            aria-label="Ir a la imagen anterior"
+          >
             <ChevronLeft size={80} color="black" />
           </button>
         </div>
         <div className="hidden lg:flex absolute top-1/2 right-[-180px] transform -translate-y-1/2 z-20">
-          <button className="p-4 rounded-full bg-white" onClick={handleNext}>
+          <button
+            className="p-4 rounded-full bg-white"
+            onClick={handleNext}
+            aria-label="Ir a la siguiente imagen"
+          >
             <ChevronRight size={80} color="black" />
           </button>
         </div>
@@ -125,7 +142,6 @@ function SkeletonLoader() {
       <div className="max-w-screen-lg mx-auto">
         <div className="relative pb-[50%]">
           <div className="absolute inset-0 bg-gray-200 animate-pulse rounded-lg flex items-center justify-center">
-            <div className="w-12 h-12 border-4 border-gray-300 border-t-gray-400 rounded-full animate-spin"></div>
           </div>
         </div>
       </div>

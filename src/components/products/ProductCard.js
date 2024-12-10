@@ -3,8 +3,8 @@ import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../firebase/firebase";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useCart } from '../../context/CartContext';
-import { ToastContainer, toast } from 'react-toastify';  // Importamos ToastContainer y toast
-import 'react-toastify/dist/ReactToastify.css';  // Estilos de Toastify // Agrega useLocation
+import { ToastContainer, toast } from 'react-toastify';  
+import 'react-toastify/dist/ReactToastify.css';  
 import FilterSidebar from './FilterSidebar';
 
 export default function ProductList({ initialShowDiscounts = false }) {
@@ -27,7 +27,7 @@ export default function ProductList({ initialShowDiscounts = false }) {
   const { addToCart } = useCart();
 
   const navigate = useNavigate();
-  const location = useLocation(); // Para obtener los parámetros de la URL
+  const location = useLocation();
 
   // Cargar productos y configurar filtros iniciales
   useEffect(() => {
@@ -66,6 +66,12 @@ export default function ProductList({ initialShowDiscounts = false }) {
         setSelectedModels(queryParams.getAll('models') || []);
         setSelectedEngineSizes(queryParams.getAll('engineSizes') || []);
         setSelectedYears(queryParams.getAll('years') || []);
+
+        // Precargar imágenes
+        productsList.forEach(product => {
+          const img = new Image();
+          img.src = product.thumbnail;
+        });
 
         setLoading(false);
       } catch (error) {
@@ -108,8 +114,8 @@ export default function ProductList({ initialShowDiscounts = false }) {
     const salePrice = product.netPrice;
 
     const handleAddToCart = (product) => {
-      addToCart(product); // Añadir al carrito
-      toast.success("Producto añadido correctamente al carrito!"); // Notificación de éxito
+      addToCart(product); 
+      toast.success("Producto añadido correctamente al carrito!");
     };
 
     return (
@@ -196,7 +202,7 @@ export default function ProductList({ initialShowDiscounts = false }) {
             onClick={(e) => {
               e.stopPropagation();
               if (!isLoading) {
-                handleAddToCart(product); // Llamamos a la función para añadir al carrito
+                handleAddToCart(product); 
               }
             }}
             disabled={isLoading}
@@ -237,7 +243,6 @@ export default function ProductList({ initialShowDiscounts = false }) {
           </div>
         </aside>
           <section className="w-full lg:w-3/4">
-
           <div className="mb-4 flex justify-between items-center">
             <button
               onClick={() => setShowFilters(!showFilters)}
@@ -285,14 +290,14 @@ export default function ProductList({ initialShowDiscounts = false }) {
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{vehicle.brand}</td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{vehicle.model}</td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{vehicle.year}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{vehicle.engineSize}cc</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{vehicle.engineSize}</td>
                       </tr>
                     ))}
                 </tbody>
               </table>
             </div>
             <button
-              className="mt-6 w-full bg-red-600 text-white rounded py-2 hover:bg-red-700 transition-colors"
+              className="mt-4 px-6 py-2 bg-red-600 text-white font-bold rounded-md hover:bg-red-700"
               onClick={() => setOpenDialog(false)}
             >
               Cerrar
@@ -300,8 +305,8 @@ export default function ProductList({ initialShowDiscounts = false }) {
           </div>
         </div>
       )}
+
       <ToastContainer />
     </div>
   );
 }
-

@@ -33,7 +33,7 @@ const TestimonialCard = ({ name, role, image, content, rating }) => (
     <div className="flex items-center mb-4">
       <img src={image} alt={name} className="w-12 h-12 rounded-full mr-4" />
       <div>
-        <h4 className="font-semibold text-lg">{name}</h4>
+        <h3 className="font-semibold text-lg">{name}</h3> 
         <p className="text-gray-600 text-sm">{role}</p>
       </div>
     </div>
@@ -48,6 +48,7 @@ const TestimonialCard = ({ name, role, image, content, rating }) => (
     </div>
   </div>
 );
+
 
 export default function TestimonialSection() {
   return (
