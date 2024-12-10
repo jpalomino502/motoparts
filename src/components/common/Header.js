@@ -15,6 +15,7 @@ export default function Header() {
   // State for tracking scroll direction
   const [isHeaderVisible, setIsHeaderVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const scrollThreshold = 100; // Umbral de desplazamiento en píxeles para ocultar el encabezado
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -36,12 +37,11 @@ export default function Header() {
 
   useEffect(() => {
     const handleScroll = () => {
-      // No ocultar el header cuando estamos al inicio de la página
-      if (window.scrollY > lastScrollY && window.scrollY > 0) {
-        // Scrolling down
+      if (window.scrollY > lastScrollY && window.scrollY > scrollThreshold) {
+        // Scrolling down and has passed the scroll threshold
         setIsHeaderVisible(false);
-      } else {
-        // Scrolling up
+      } else if (window.scrollY < lastScrollY || window.scrollY <= scrollThreshold) {
+        // Scrolling up or less than threshold
         setIsHeaderVisible(true);
       }
       setLastScrollY(window.scrollY);
@@ -85,7 +85,7 @@ export default function Header() {
     const linkClass = isMobile
       ? "block px-4 py-3 text-base font-medium w-full text-left mb-4"
       : "px-3 py-2 text-sm font-medium flex items-center whitespace-nowrap";
-
+  
     const links = [
       { to: "/products", icon: Tag, text: "Productos", name: "productos" },
       { to: "/about", icon: Info, text: "Quienes Somos", name: "about" },
@@ -104,11 +104,11 @@ export default function Header() {
                 : "text-white hover:text-white hover-link"
             }`}
             onClick={() => handleLinkClick(link.name)}
-            aria-label={`Ir a ${link.text}`}  // Añadido para accesibilidad
+            aria-label={`Ir a ${link.text}`}
           >
             <link.icon
               className={`${isMobile ? "h-5 w-5 mr-3 inline" : "h-4 w-4 mr-1"}`}
-              aria-hidden="true"  // Evitar que el icono sea leído como contenido adicional
+              aria-hidden="true" 
             />
             {link.text}
           </Link>
@@ -123,32 +123,34 @@ export default function Header() {
                   : "text-white hover:text-white hover-link"
               }`}
               onClick={() => handleLinkClick("perfil")}
-              aria-label="Ir al perfil de usuario"  // Descripción clara
+              aria-label="Ir al perfil de usuario" 
             >
               <User
                 className={`${
                   isMobile ? "h-5 w-5 mr-3 inline" : "h-4 w-4 mr-1"
                 }`}
-                aria-hidden="true"  // No es necesario leer el ícono como contenido
+                aria-hidden="true" 
               />
               Perfil
             </Link>
-            <Link
-              to="/cart"
-              className={`${linkClass} ${
-                activeLink === "carrito"
-                  ? "active-link"
-                  : "text-white hover:text-white hover-link"
-              }`}
-              onClick={() => handleLinkClick("carrito")}
-              aria-label="Ir al carrito de compras"  // Descripción clara
-            >
-              <ShoppingCart
-                className={`${isMobile ? "h-5 w-5 mr-3 inline" : "h-5 w-5"}`}
-                aria-hidden="true"  // No es necesario leer el ícono como contenido
-              />
-              {isMobile ? "Carrito" : ""}
-            </Link>
+            {!isMobile && ( // Renderiza el carrito solo si no es móvil
+              <Link
+                to="/cart"
+                className={`${linkClass} ${
+                  activeLink === "carrito"
+                    ? "active-link"
+                    : "text-white hover:text-white hover-link"
+                }`}
+                onClick={() => handleLinkClick("carrito")}
+                aria-label="Ir al carrito de compras"
+              >
+                <ShoppingCart
+                  className="h-5 w-5" // No necesita cambiar en escritorio
+                  aria-hidden="true"
+                />
+                {isMobile ? "Carrito" : ""}
+              </Link>
+            )}
           </>
         ) : (
           <button
@@ -162,11 +164,11 @@ export default function Header() {
                 ? "active-link"
                 : "text-white hover:text-white hover-link"
             }`}
-            aria-label="Iniciar sesión"  // Descripción clara
+            aria-label="Iniciar sesión"
           >
             <User
               className={`${isMobile ? "h-5 w-5 mr-3 inline" : "h-4 w-4 mr-1"}`}
-              aria-hidden="true"  // No es necesario leer el ícono como contenido
+              aria-hidden="true"
             />
             Iniciar Sesión
           </button>

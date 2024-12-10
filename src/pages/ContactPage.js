@@ -3,7 +3,8 @@ import { Mail, Phone, MapPin, Send, Clock } from 'lucide-react'
 
 export default function ContactComponent() {
   return (
-    <div className="bg-white p-8 rounded-lg shadow-lg max-w-4xl mx-auto">
+    <div className="bg-white m-8 lg:mt-20 p-8 rounded-lg shadow-lg max-w-4xl mx-auto">
+      <div className='flex-grow px-4 py-4 sm:px-6 lg:py-10'>
       <h2 className="text-3xl font-bold text-gray-800 mb-6">Contáctanos</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div>
@@ -69,6 +70,7 @@ export default function ContactComponent() {
           </form>
         </div>
       </div>
+      </div> 
     </div>
   )
 }

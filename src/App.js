@@ -21,7 +21,7 @@ export default function App() {
     <Router>
       <div className="min-h-screen bg-gray-100 flex flex-col">
         <Header />
-        <main className="flex-grow px-4 py-4 sm:px-6 lg:py-10 ">
+        <main>
           <div>
             <Routes>
               <Route path="/" element={<Home />} />

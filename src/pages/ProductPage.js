@@ -8,7 +8,7 @@ export default function ProductPage() {
   const initialShowDiscounts = queryParams.get('discount') === 'true';
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="flex-grow px-4 py-4 sm:px-6 lg:py-10">
       <div className="container mx-auto px-4 py-2 max-w-7xl">
         <h1 className="text-3xl mx-auto px-4 py-2 max-w-7xl font-bold text-[#201c1c]">Productos NKS</h1>
         <ProductList initialShowDiscounts={initialShowDiscounts} />

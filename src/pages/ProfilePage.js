@@ -84,7 +84,7 @@ const Profile = () => {
   ];
 
   const SkeletonLoading = () => (
-    <div className="bg-white rounded-lg shadow p-6 space-y-6 animate-pulse mt-8">
+    <div className="bg-white rounded-lg shadow p-6 space-y-6 animate-pulse mt-12">
       <div className="h-6 bg-gray-200 rounded w-1/4"></div>
       <div className="space-y-3">
         <div className="h-4 bg-gray-200 rounded"></div>
@@ -95,33 +95,41 @@ const Profile = () => {
   );
 
   return (
-    <div className="bg-gray-100 min-h-screen flex mt-8">
+    <div className="bg-gray-100 flex lg:mt-11">
       {/* Sidebar */}
-      <aside className={`bg-white w-64 min-h-screen flex flex-col transition-all duration-300 ease-in-out ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 md:static absolute z-10`}>
-        <div className="p-4 bg-black text-white flex justify-between items-center">
-          <h2 className="text-2xl font-semibold">Mi Perfil</h2>
-          <button onClick={() => setSidebarOpen(false)} className="md:hidden">
-            <X className="h-6 w-6" />
-          </button>
-        </div>
-        <nav className="flex-1 pt-6">
-          {tabs.map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => {
-                setActiveTab(tab.id);
-                setSidebarOpen(false);
-              }}
-              className={`w-full flex items-center px-6 py-3 text-left ${
-                activeTab === tab.id ? 'bg-red-50 text-red-600' : 'text-gray-600 hover:bg-red-50 hover:text-red-600'
-              }`}
-            >
-              <tab.icon className="h-5 w-5 mr-3" />
-              {tab.name}
-            </button>
-          ))}
-        </nav>
-      </aside>
+{/* Sidebar */}
+<aside
+  className={`bg-white w-64 min-h-screen flex flex-col transition-all duration-300 ease-in-out ${
+    sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+  } md:translate-x-0 md:static absolute z-10`}
+>
+  <div className="p-4 bg-black text-white flex justify-between items-center">
+    <h2 className="text-2xl font-semibold">Mi Perfil</h2>
+    <button onClick={() => setSidebarOpen(false)} className="md:hidden">
+      <X className="h-6 w-6" />
+    </button>
+  </div>
+  <nav className="flex-1 pt-6">
+    {tabs.map((tab) => (
+      <button
+        key={tab.id}
+        onClick={() => {
+          setActiveTab(tab.id);
+          setSidebarOpen(false);
+        }}
+        className={`w-full flex items-center px-6 py-3 text-left ${
+          activeTab === tab.id
+            ? 'bg-red-50 text-red-600'
+            : 'text-gray-600 hover:bg-red-50 hover:text-red-600'
+        }`}
+      >
+        <tab.icon className="h-5 w-5 mr-3" />
+        {tab.name}
+      </button>
+    ))}
+  </nav>
+</aside>
+
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col">

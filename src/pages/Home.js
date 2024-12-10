@@ -8,7 +8,7 @@ import FeaturedProducts from '../components/home/FeaturedProducts';
 export default function Home() {
 
   return (
-    <div>
+    <div className='flex-grow px-4 py-4 sm:px-6 lg:py-10'>
       <SearchBar />
       <HeroSection/>
       <FeaturedProducts />
