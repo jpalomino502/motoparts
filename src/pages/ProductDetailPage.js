@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { db } from '../firebase/firebase';
-import { Star, Minus, Plus, ChevronRight } from 'lucide-react';
-import { doc, getDoc } from 'firebase/firestore';
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { db } from "../firebase/firebase";
+import { Star, Minus, Plus, ChevronRight } from "lucide-react";
+import { doc, getDoc } from "firebase/firestore";
 
 export default function ProductPage() {
   const { id } = useParams();
@@ -17,7 +17,7 @@ export default function ProductPage() {
   useEffect(() => {
     const fetchProductData = async () => {
       try {
-        const docRef = doc(db, 'products', id);
+        const docRef = doc(db, "products", id);
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
@@ -29,7 +29,7 @@ export default function ProductPage() {
           console.log("No such document!");
         }
       } catch (error) {
-        console.error('Error fetching product data:', error);
+        console.error("Error fetching product data:", error);
       } finally {
         setIsLoading(false);
       }
@@ -42,14 +42,14 @@ export default function ProductPage() {
     return <LoadingSkeleton />;
   }
 
-  const hasDiscount = product.discount && parseInt(product.discount) > 0; // Check if discount exists and is greater than 0
+  const hasDiscount = product.discount && parseInt(product.discount) > 0;
 
   const formatPrice = (price) => {
-    return `COP ${parseInt(price).toLocaleString('es-CO')}`;
+    return `COP ${parseInt(price).toLocaleString("es-CO")}`;
   };
 
   return (
-    <div className="max-w-7xl mx-auto p-4">
+    <div className="max-w-7xl mx-auto p-4 mt-8">
       <div className="flex flex-col lg:flex-row gap-8">
         <div className="lg:w-1/2">
           <div className="flex flex-col sm:flex-row gap-4 mb-8">
@@ -67,7 +67,9 @@ export default function ProductPage() {
                   src={img}
                   alt={`Vista ${index + 1}`}
                   className={`w-16 h-16 object-cover cursor-pointer border-2 ${
-                    selectedImage === index ? 'border-red-600' : 'border-gray-200'
+                    selectedImage === index
+                      ? "border-red-600"
+                      : "border-gray-200"
                   }`}
                   onClick={() => setSelectedImage(index)}
                 />
@@ -87,7 +89,9 @@ export default function ProductPage() {
                 ))}
               </div>
             ) : (
-              <p className="text-sm text-gray-500">Aún no hay comentarios para este producto.</p>
+              <p className="text-sm text-gray-500">
+                Aún no hay comentarios para este producto.
+              </p>
             )}
             <button className="w-full mt-4 border border-gray-300 rounded py-2 hover:bg-gray-50">
               ESCRIBE UN COMENTARIO
@@ -99,8 +103,7 @@ export default function ProductPage() {
           <div className="flex items-center justify-between mb-4">
             <h1 className="text-2xl font-bold">{product.title}</h1>
 
-            {/* Mostrar etiqueta de descuento solo si hay descuento */}
-            {hasDiscount && (
+            {product.discount > 0 && (
               <div className="bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">
                 {product.discount}% OFF
               </div>
@@ -109,19 +112,24 @@ export default function ProductPage() {
 
           <div className="flex items-center gap-2 mb-4">
             {[...Array(5)].map((_, i) => (
-              <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
+              <Star
+                key={i}
+                className="w-5 h-5 fill-yellow-400 text-yellow-400"
+              />
             ))}
-            <span className="text-sm text-gray-600">{reviews.length} Comentarios</span>
+            <span className="text-sm text-gray-600">
+              {reviews.length} Comentarios
+            </span>
           </div>
 
           <div className="flex items-center gap-4 mb-6 relative">
-            {hasDiscount && (
+            {product.discount > 0 && (
               <span className="text-gray-500 line-through">
-                {formatPrice(product.price)} {/* Precio original tachado */}
+                {formatPrice(product.price)}
               </span>
             )}
             <span className="text-2xl font-bold">
-              {formatPrice(product.netPrice)} {/* Precio final (neto) */}
+              {formatPrice(product.netPrice)}
             </span>
           </div>
 
@@ -145,13 +153,17 @@ export default function ProductPage() {
               />
               <button
                 className="px-3 py-1 border-l"
-                onClick={() => setQuantity(Math.min(quantity + 1, product.stock))}
+                onClick={() =>
+                  setQuantity(Math.min(quantity + 1, product.stock))
+                }
                 disabled={quantity >= product.stock}
               >
                 <Plus className="w-4 h-4" />
               </button>
             </div>
-            <span className="text-sm text-gray-500">Disponibles: {product.stock}</span>
+            <span className="text-sm text-gray-500">
+              Disponibles: {product.stock}
+            </span>
           </div>
 
           <button className="w-full bg-red-50 border border-red-600 text-red-600 py-2 rounded mb-2 hover:bg-red-100">
@@ -203,7 +215,9 @@ export default function ProductPage() {
             ))}
           </div>
         ) : (
-          <p className="text-sm text-gray-500">Aún no hay comentarios para este producto.</p>
+          <p className="text-sm text-gray-500">
+            Aún no hay comentarios para este producto.
+          </p>
         )}
         <button className="w-full mt-4 border border-gray-300 rounded py-2 hover:bg-gray-50">
           ESCRIBE UN COMENTARIO
@@ -215,7 +229,7 @@ export default function ProductPage() {
 
 function LoadingSkeleton() {
   return (
-    <div className="max-w-7xl mx-auto p-4">
+    <div className="max-w-7xl mx-auto p-4 mt-8">
       <div className="flex flex-col lg:flex-row gap-8">
         <div className="lg:w-1/2 space-y-4">
           <div className="w-full aspect-square bg-gray-200 rounded-lg"></div>
