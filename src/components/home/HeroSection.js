@@ -1,37 +1,36 @@
-import React, { useEffect, useState, useRef } from 'react'
-import Slider from 'react-slick'
-import { collection, getDocs } from 'firebase/firestore'
-import { db } from '../../firebase/firebase'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
-import 'slick-carousel/slick/slick.css'
-import 'slick-carousel/slick/slick-theme.css'
+import React, { useEffect, useState, useRef, Suspense } from 'react';
+import Slider from 'react-slick';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../../firebase/firebase';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 
 export default function HeroSection() {
-  const [heroImages, setHeroImages] = useState([])
-  const [imagesLoaded, setImagesLoaded] = useState(false)
-
-  const sliderRef = useRef(null)
+  const [heroImages, setHeroImages] = useState([]);
+  const [imagesLoaded, setImagesLoaded] = useState(false);
+  const sliderRef = useRef(null);
 
   useEffect(() => {
     const loadImagesFromFirestore = async () => {
       try {
-        const querySnapshot = await getDocs(collection(db, 'hero'))
-        const images = querySnapshot.docs.map((doc) => doc.data().url)
-        setHeroImages(images)
-        preloadImages(images)
-        addPreloadLinks(images) 
+        const querySnapshot = await getDocs(collection(db, 'hero'));
+        const images = querySnapshot.docs.map((doc) => doc.data().url);
+        setHeroImages(images);
+        preloadImages(images);
+        addPreloadLinks(images); 
       } catch (error) {
-        console.error("Error al obtener imágenes de Firestore:", error)
+        console.error("Error al obtener imágenes de Firestore:", error);
       }
-    }
+    };
 
-    loadImagesFromFirestore()
-  }, [])
+    loadImagesFromFirestore();
+  }, []);
 
   const preloadImages = (images) => {
     let loadedImagesCount = 0;
     const totalImages = images.length;
-    
+
     images.forEach((image) => {
       const img = new Image();
       img.src = image;
@@ -40,9 +39,9 @@ export default function HeroSection() {
         if (loadedImagesCount === totalImages) {
           setImagesLoaded(true);
         }
-      }
+      };
     });
-  }
+  };
 
   const addPreloadLinks = (images) => {
     images.forEach((image) => {
@@ -50,18 +49,18 @@ export default function HeroSection() {
       link.rel = 'preload';
       link.href = image;
       link.as = 'image';
-      link.type = 'image/webp';
+      link.type = 'image/jpeg';
       document.head.appendChild(link);
     });
-  }
+  };
 
   const handleNext = () => {
-    sliderRef.current.slickNext()
-  }
+    sliderRef.current.slickNext();
+  };
 
   const handlePrev = () => {
-    sliderRef.current.slickPrev()
-  }
+    sliderRef.current.slickPrev();
+  };
 
   const settings = {
     dots: false,
@@ -95,28 +94,31 @@ export default function HeroSection() {
         },
       },
     ],
-  }
+  };
 
   if (!imagesLoaded) {
-    return <SkeletonLoader />
+    return <SkeletonLoader />;
   }
 
   return (
     <div className="relative w-full overflow-hidden">
       <div className="max-w-screen-lg mx-auto relative">
-        <Slider ref={sliderRef} {...settings}>
-          {heroImages.map((image, index) => (
-            <div key={index} className="relative w-full">
-              <div className="pb-[50%]">
-                <img
-                  src={image}
-                  alt={`Imagen del carrusel ${index + 1}`}
-                  className="absolute inset-0 w-full h-full rounded-lg"
-                />
+        <Suspense fallback={<SkeletonLoader />}>
+          <Slider ref={sliderRef} {...settings}>
+            {heroImages.map((image, index) => (
+              <div key={index} className="relative w-full">
+                <div className="pb-[50%]">
+                  <img
+                    src={image}
+                    alt={`Imagen del carrusel ${index + 1}`}
+                    className="absolute inset-0 w-full h-full rounded-lg"
+                    loading="eager"
+                  />
+                </div>
               </div>
-            </div>
-          ))}
-        </Slider>
+            ))}
+          </Slider>
+        </Suspense>
 
         <div className="hidden lg:flex absolute top-1/2 left-[-180px] transform -translate-y-1/2 z-20">
           <div
@@ -137,7 +139,7 @@ export default function HeroSection() {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 function SkeletonLoader() {
@@ -153,5 +155,5 @@ function SkeletonLoader() {
         </div>
       </div>
     </div>
-  )
+  );
 }

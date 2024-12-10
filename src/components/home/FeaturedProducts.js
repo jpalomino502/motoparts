@@ -149,7 +149,7 @@ export default function ProductList() {
       <h2 className="text-4xl sm:text-5xl font-bold text-center mb-8">
         <span className="text-red-600">LO MEJOR EN</span>
         <br />
-        <span className="text-white inline-block mt-2" style={{ WebkitTextStroke: "1px red" }}>
+        <span className="text-gray-800 inline-block mt-2">
           FILTROS DE AIRE
         </span>
       </h2>
@@ -165,9 +165,16 @@ export default function ProductList() {
       </div>
 
       {openDialog && selectedProduct && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50"
+          role="dialog"
+          aria-labelledby="dialog-title"
+          aria-modal="true"
+        >
           <div className="bg-white rounded-lg p-6 max-w-3xl w-full max-h-[90vh] overflow-auto">
-            <h2 className="text-xl font-bold mb-4">Vehículos Compatibles - {selectedProduct.reference}</h2>
+            <h2 id="dialog-title" className="text-xl font-bold mb-4">
+              Vehículos Compatibles - {selectedProduct.reference}
+            </h2>
             <div className="overflow-x-auto">
               <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-50">

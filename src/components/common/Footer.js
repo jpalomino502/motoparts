@@ -38,10 +38,12 @@ export default function Footer() {
         <div className="space-y-6">
           <h2 className="text-2xl font-bold tracking-wider">SIGUENOS</h2>
           <img 
-            src={logo} 
-            alt="NKS Filtros Logo" 
-            className="h-16 object-contain"
-          />
+  src={logo}
+  alt="NKS Filtros Logo" 
+  class="h-16 object-contain w-40"
+  width="160" height="64"
+/>
+
           <div className="flex gap-4">
             <a 
               href="#" 

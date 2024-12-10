@@ -35,7 +35,6 @@ export default function Header() {
   }, [location]);
 
   useEffect(() => {
-    // Function to handle scroll
     const handleScroll = () => {
       if (window.scrollY > lastScrollY) {
         // Scrolling down
@@ -49,7 +48,6 @@ export default function Header() {
 
     window.addEventListener("scroll", handleScroll);
 
-    // Cleanup event listener
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
@@ -105,9 +103,11 @@ export default function Header() {
                 : "text-white hover:text-white hover-link"
             }`}
             onClick={() => handleLinkClick(link.name)}
+            aria-label={`Ir a ${link.text}`}  // Añadido para accesibilidad
           >
             <link.icon
               className={`${isMobile ? "h-5 w-5 mr-3 inline" : "h-4 w-4 mr-1"}`}
+              aria-hidden="true"  // Evitar que el icono sea leído como contenido adicional
             />
             {link.text}
           </Link>
@@ -122,11 +122,13 @@ export default function Header() {
                   : "text-white hover:text-white hover-link"
               }`}
               onClick={() => handleLinkClick("perfil")}
+              aria-label="Ir al perfil de usuario"  // Descripción clara
             >
               <User
                 className={`${
                   isMobile ? "h-5 w-5 mr-3 inline" : "h-4 w-4 mr-1"
                 }`}
+                aria-hidden="true"  // No es necesario leer el ícono como contenido
               />
               Perfil
             </Link>
@@ -138,9 +140,11 @@ export default function Header() {
                   : "text-white hover:text-white hover-link"
               }`}
               onClick={() => handleLinkClick("carrito")}
+              aria-label="Ir al carrito de compras"  // Descripción clara
             >
               <ShoppingCart
                 className={`${isMobile ? "h-5 w-5 mr-3 inline" : "h-5 w-5"}`}
+                aria-hidden="true"  // No es necesario leer el ícono como contenido
               />
               {isMobile ? "Carrito" : ""}
             </Link>
@@ -157,9 +161,11 @@ export default function Header() {
                 ? "active-link"
                 : "text-white hover:text-white hover-link"
             }`}
+            aria-label="Iniciar sesión"  // Descripción clara
           >
             <User
               className={`${isMobile ? "h-5 w-5 mr-3 inline" : "h-4 w-4 mr-1"}`}
+              aria-hidden="true"  // No es necesario leer el ícono como contenido
             />
             Iniciar Sesión
           </button>
@@ -170,23 +176,28 @@ export default function Header() {
 
   return (
     <>
-<header
-  className={`bg-black shadow-md fixed top-0 left-0 right-0 z-50 lg:mb-3 transition-transform duration-300 ${
-    isHeaderVisible ? "translate-y-0" : "-translate-y-[110px]" 
-  }`}
-  style={{ transition: 'transform 0.6s ease-in-out' }}
->
-
+      <header
+        className={`bg-black shadow-md fixed top-0 left-0 right-0 z-50 lg:mb-3 transition-transform duration-300 ${
+          isHeaderVisible ? "translate-y-0" : "-translate-y-[110px]"
+        }`}
+        style={{ transition: "transform 0.6s ease-in-out" }}
+      >
         <div className="w-full mx-auto px-4 sm:px-6 lg:px-8 bg-black">
           <div className="flex items-center justify-between h-16 lg:h-28">
             <div className="flex items-center lg:mr-auto w-full justify-between lg:justify-start">
               <Link to="/" onClick={() => handleLinkClick("")}>
-                <img src={logo} alt="Logo" className="h-12 lg:h-20 w-auto" />
+                <img
+                  src={logo}
+                  alt="Logo de la tienda - Enlace a la página de inicio"  // Descripción clara
+                  className="h-auto max-h-16 w-auto"
+                  width="128"
+                  height="48"
+                />
               </Link>
             </div>
 
             <div className="lg:hidden flex items-center ml-auto space-x-4">
-              <Link to="/cart" className="text-white">
+              <Link to="/cart" className="text-white" aria-label="Ir al carrito de compras">
                 <ShoppingCart className="h-6 w-6" />
               </Link>
               <button
@@ -247,6 +258,7 @@ export default function Header() {
           {renderNavLinks(true)}
         </nav>
       </div>
+
       <LoginModal isOpen={isLoginModalOpen} onClose={handleModalClose} />
     </>
   );
