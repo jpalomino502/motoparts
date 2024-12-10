@@ -79,10 +79,12 @@ export default function ProductList() {
               <div className="w-full h-full bg-gray-300 animate-pulse"></div>
             ) : (
               <img
-                src={product.thumbnail}
-                alt={product.title}
-                className="w-full h-full object-cover"
-              />
+              src={product.thumbnail}
+              alt={product.title}
+              className="w-full h-full object-cover"
+              width="200" // Añadido
+              height="200" // Añadido
+            />
             )}
           </div>
           <div>

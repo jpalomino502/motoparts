@@ -8,38 +8,36 @@ import 'slick-carousel/slick/slick-theme.css';
 
 export default function HeroSection() {
   const [heroImages, setHeroImages] = useState([]);
-  const [imagesLoaded, setImagesLoaded] = useState(false);
   const sliderRef = useRef(null);
+  const [imagesLoaded, setImagesLoaded] = useState(false);
 
   useEffect(() => {
-    const loadImagesFromFirestore = async () => {
+    const fetchImages = async () => {
       try {
         const querySnapshot = await getDocs(collection(db, 'hero'));
         const images = querySnapshot.docs.map((doc) => doc.data().url);
         setHeroImages(images);
         preloadImages(images);
-        addPreloadLinks(images); 
+        addPreloadLinks(images);
       } catch (error) {
-        console.error("Error al obtener imágenes de Firestore:", error);
+        console.error("Error fetching images:", error);
       }
     };
-
-    loadImagesFromFirestore();
+    fetchImages();
   }, []);
 
   const preloadImages = (images) => {
-    let loadedImagesCount = 0;
-    const totalImages = images.length;
+    const promises = images.map((src) => {
+      return new Promise((resolve) => {
+        const img = new Image();
+        img.src = src;
+        img.onload = resolve;
+        img.onerror = resolve;
+      });
+    });
 
-    images.forEach((image) => {
-      const img = new Image();
-      img.src = image;
-      img.onload = () => {
-        loadedImagesCount += 1;
-        if (loadedImagesCount === totalImages) {
-          setImagesLoaded(true);
-        }
-      };
+    Promise.all(promises).then(() => {
+      setImagesLoaded(true);
     });
   };
 
@@ -49,32 +47,27 @@ export default function HeroSection() {
       link.rel = 'preload';
       link.href = image;
       link.as = 'image';
-      link.type = 'image/jpeg';
       document.head.appendChild(link);
     });
   };
 
-  const handleNext = () => {
-    sliderRef.current.slickNext();
-  };
+  const handleNext = () => sliderRef.current.slickNext();
+  const handlePrev = () => sliderRef.current.slickPrev();
 
-  const handlePrev = () => {
-    sliderRef.current.slickPrev();
-  };
-
-  const settings = {
-    dots: false,
+  const sliderSettings = {
+    dots: true,
     infinite: true,
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 3000,
+    adaptiveHeight: true,
     nextArrow: null,
     prevArrow: null,
     appendDots: (dots) => (
       <div>
-        <ul className="m-0 p-0"> {dots} </ul>
+        <ul className="m-0 p-0">{dots}</ul>
       </div>
     ),
     customPaging: () => (
@@ -83,15 +76,7 @@ export default function HeroSection() {
     responsive: [
       {
         breakpoint: 768,
-        settings: {
-          slidesToShow: 1,
-        },
-      },
-      {
-        breakpoint: 480,
-        settings: {
-          slidesToShow: 1,
-        },
+        settings: { slidesToShow: 1 },
       },
     ],
   };
@@ -104,38 +89,30 @@ export default function HeroSection() {
     <div className="relative w-full overflow-hidden">
       <div className="max-w-screen-lg mx-auto relative">
         <Suspense fallback={<SkeletonLoader />}>
-          <Slider ref={sliderRef} {...settings}>
+          <Slider ref={sliderRef} {...sliderSettings}>
             {heroImages.map((image, index) => (
               <div key={index} className="relative w-full">
-                <div className="pb-[50%]">
-                  <img
-                    src={image}
-                    alt={`Imagen del carrusel ${index + 1}`}
-                    className="absolute inset-0 w-full h-full rounded-lg"
-                    loading="eager"
-                  />
-                </div>
+                <img
+                  src={image}
+                  alt={`Carousel image ${index + 1}`}
+                  className="w-full h-auto rounded-lg"
+                  width="1920"
+                  height="1080"
+                  loading={index === 0 ? "eager" : "lazy"} // Prioriza la primera imagen
+                />
               </div>
             ))}
           </Slider>
         </Suspense>
-
         <div className="hidden lg:flex absolute top-1/2 left-[-180px] transform -translate-y-1/2 z-20">
-          <div
-            className="p-6 rounded-full cursor-pointer"
-            onClick={handlePrev}
-          >
-            <ChevronLeft size={100} color="black" />
-          </div>
+          <button className="p-4 rounded-full bg-white" onClick={handlePrev}>
+            <ChevronLeft size={80} color="black" />
+          </button>
         </div>
-
         <div className="hidden lg:flex absolute top-1/2 right-[-180px] transform -translate-y-1/2 z-20">
-          <div
-            className="p-6 rounded-full cursor-pointer"
-            onClick={handleNext}
-          >
-            <ChevronRight size={100} color="black" />
-          </div>
+          <button className="p-4 rounded-full bg-white" onClick={handleNext}>
+            <ChevronRight size={80} color="black" />
+          </button>
         </div>
       </div>
     </div>
@@ -147,10 +124,8 @@ function SkeletonLoader() {
     <div className="relative w-full overflow-hidden">
       <div className="max-w-screen-lg mx-auto">
         <div className="relative pb-[50%]">
-          <div className="absolute inset-0 bg-gray-200 animate-pulse rounded-lg">
-            <div className="h-full w-full flex items-center justify-center">
-              <div className="w-12 h-12 border-4 border-gray-300 border-t-gray-400 rounded-full animate-spin"></div>
-            </div>
+          <div className="absolute inset-0 bg-gray-200 animate-pulse rounded-lg flex items-center justify-center">
+            <div className="w-12 h-12 border-4 border-gray-300 border-t-gray-400 rounded-full animate-spin"></div>
           </div>
         </div>
       </div>
