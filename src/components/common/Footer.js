@@ -1,48 +1,78 @@
+import { Phone, Mail, Instagram, Facebook } from 'lucide-react'
+import logo from '../../assets/logo.webp'
+
 export default function Footer() {
-    return (
-      <footer className="bg-black text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div>
-              <h3 className="text-lg font-semibold mb-4">Acerca de MotoPartes</h3>
-              <ul className="space-y-2">
-                <li><a href="#" className="hover:text-blue-400 transition-colors">Quiénes somos</a></li>
-                <li><a href="#" className="hover:text-blue-400 transition-colors">Trabaja con nosotros</a></li>
-                <li><a href="#" className="hover:text-blue-400 transition-colors">Términos y condiciones</a></li>
-                <li><a href="#" className="hover:text-blue-400 transition-colors">Política de privacidad</a></li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold mb-4">Ayuda</h3>
-              <ul className="space-y-2">
-                <li><a href="#" className="hover:text-blue-400 transition-colors">Preguntas frecuentes</a></li>
-                <li><a href="#" className="hover:text-blue-400 transition-colors">Envíos</a></li>
-                <li><a href="#" className="hover:text-blue-400 transition-colors">Devoluciones</a></li>
-                <li><a href="#" className="hover:text-blue-400 transition-colors">Contacto</a></li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold mb-4">Redes Sociales</h3>
-              <ul className="space-y-2">
-                <li><a href="#" className="hover:text-blue-400 transition-colors">Facebook</a></li>
-                <li><a href="#" className="hover:text-blue-400 transition-colors">Instagram</a></li>
-                <li><a href="#" className="hover:text-blue-400 transition-colors">Twitter</a></li>
-                <li><a href="#" className="hover:text-blue-400 transition-colors">YouTube</a></li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold mb-4">Descarga nuestra app</h3>
-              <div className="flex space-x-4">
-                <a href="#" className="bg-white text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors">App Store</a>
-                <a href="#" className="bg-white text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors">Google Play</a>
-              </div>
-            </div>
-          </div>
-          <div className="mt-8 pt-8 border-t border-gray-700 text-center">
-            <p>&copy; 2024 NKS. Todos los derechos reservados.</p>
+  return (
+    <footer className="bg-black text-white py-12 px-4">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+        {/* Contacto Section */}
+        <div className="space-y-4">
+          <h2 className="text-2xl font-bold tracking-wider">CONTACTO</h2>
+          <div className="space-y-2">
+            <a 
+              href="tel:+573202895405" 
+              className="flex items-center gap-2 hover:text-red-500 transition-colors"
+            >
+              <Phone className="w-5 h-5" />
+              +57 320 2895405
+            </a>
+            <a 
+              href="mailto:nksfiltros@gmail.com" 
+              className="flex items-center gap-2 hover:text-red-500 transition-colors"
+            >
+              <Mail className="w-5 h-5" />
+              nksfiltros@gmail.com
+            </a>
           </div>
         </div>
-      </footer>
-    );
-  }
-  
+
+        {/* Productos Section */}
+        <div className="space-y-4">
+          <h2 className="text-2xl font-bold tracking-wider">PRODUCTOS</h2>
+          <p className="text-lg leading-relaxed">
+            FILTROS DE AIRE DE ALTO FLUJO IDEALES PARA TU MOTO.
+          </p>
+        </div>
+
+        {/* Siguenos Section */}
+        <div className="space-y-6">
+          <h2 className="text-2xl font-bold tracking-wider">SIGUENOS</h2>
+          <img 
+            src={logo} 
+            alt="NKS Filtros Logo" 
+            className="h-16 object-contain"
+          />
+          <div className="flex gap-4">
+            <a 
+              href="#" 
+              className="bg-red-600 p-2 rounded-full hover:bg-red-700 transition-colors"
+              aria-label="Instagram"
+            >
+              <Instagram className="w-6 h-6" />
+            </a>
+            <a 
+              href="#" 
+              className="bg-red-600 p-2 rounded-full hover:bg-red-700 transition-colors"
+              aria-label="Facebook"
+            >
+              <Facebook className="w-6 h-6" />
+            </a>
+            <a 
+              href="#" 
+              className="bg-red-600 p-2 rounded-full hover:bg-red-700 transition-colors"
+              aria-label="TikTok"
+            >
+              <svg 
+                className="w-6 h-6" 
+                viewBox="0 0 24 24" 
+                fill="currentColor"
+              >
+                <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </footer>
+  )
+}

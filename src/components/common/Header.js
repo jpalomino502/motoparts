@@ -12,6 +12,10 @@ export default function Header() {
   const [activeLink, setActiveLink] = useState("");
   const location = useLocation();
 
+  // State for tracking scroll direction
+  const [isHeaderVisible, setIsHeaderVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
   useEffect(() => {
     window.scrollTo(0, 0);
     const path = location.pathname;
@@ -29,6 +33,27 @@ export default function Header() {
       setActiveLink("");
     }
   }, [location]);
+
+  useEffect(() => {
+    // Function to handle scroll
+    const handleScroll = () => {
+      if (window.scrollY > lastScrollY) {
+        // Scrolling down
+        setIsHeaderVisible(false);
+      } else {
+        // Scrolling up
+        setIsHeaderVisible(true);
+      }
+      setLastScrollY(window.scrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    // Cleanup event listener
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [lastScrollY]);
 
   const handleModalClose = () => {
     setLoginModalOpen(false);
@@ -60,7 +85,7 @@ export default function Header() {
   const renderNavLinks = (isMobile = false) => {
     const linkClass = isMobile
       ? "block px-4 py-3 text-base font-medium w-full text-left mb-4"
-      : "px-3 py-2 text-sm font-medium flex items-center";
+      : "px-3 py-2 text-sm font-medium flex items-center whitespace-nowrap";
 
     const links = [
       { to: "/products", icon: Tag, text: "Productos", name: "productos" },
@@ -82,9 +107,7 @@ export default function Header() {
             onClick={() => handleLinkClick(link.name)}
           >
             <link.icon
-              className={`${
-                isMobile ? "h-5 w-5 mr-3 inline" : "h-4 w-4 mr-1"
-              }`}
+              className={`${isMobile ? "h-5 w-5 mr-3 inline" : "h-4 w-4 mr-1"}`}
             />
             {link.text}
           </Link>
@@ -107,7 +130,6 @@ export default function Header() {
               />
               Perfil
             </Link>
-
             <Link
               to="/cart"
               className={`${linkClass} ${
@@ -137,9 +159,7 @@ export default function Header() {
             }`}
           >
             <User
-              className={`${
-                isMobile ? "h-5 w-5 mr-3 inline" : "h-4 w-4 mr-1"
-              }`}
+              className={`${isMobile ? "h-5 w-5 mr-3 inline" : "h-4 w-4 mr-1"}`}
             />
             Iniciar Sesión
           </button>
@@ -150,30 +170,50 @@ export default function Header() {
 
   return (
     <>
-<header className="bg-black shadow-md fixed top-0 left-0 right-0 z-50">
-  <div className="w-full mx-auto px-4 sm:px-6 lg:px-8 bg-black"> {/* Cambié max-w-7xl a w-full */}
-    <div className="flex items-center justify-between h-20">
-      <div className="flex items-center">
-        <Link to="/" onClick={() => handleLinkClick("")}>
-          <img src={logo} alt="Logo" className="h-16 w-auto" />
-        </Link>
-      </div>
+<header
+  className={`bg-black shadow-md fixed top-0 left-0 right-0 z-50 lg:mb-3 transition-transform duration-300 ${
+    isHeaderVisible ? "translate-y-0" : "-translate-y-[110px]" 
+  }`}
+  style={{ transition: 'transform 0.6s ease-in-out' }}
+>
 
-      <nav className="hidden lg:flex items-center space-x-4">
-        {renderNavLinks()}
-      </nav>
+        <div className="w-full mx-auto px-4 sm:px-6 lg:px-8 bg-black">
+          <div className="flex items-center justify-between h-16 lg:h-28">
+            <div className="flex items-center lg:mr-auto w-full justify-between lg:justify-start">
+              <Link to="/" onClick={() => handleLinkClick("")}>
+                <img src={logo} alt="Logo" className="h-12 lg:h-20 w-auto" />
+              </Link>
+            </div>
 
-      <button
-        className="lg:hidden p-2 rounded-full text-white hover:text-white"
-        onClick={handleSideMenuToggle}
-        aria-label="Abrir menú"
-      >
-        <Menu className="h-6 w-6" />
-      </button>
-    </div>
-  </div>
-</header>
+            <div className="lg:hidden flex items-center ml-auto space-x-4">
+              <Link to="/cart" className="text-white">
+                <ShoppingCart className="h-6 w-6" />
+              </Link>
+              <button
+                className="p-2 rounded-full text-white hover:text-white"
+                onClick={handleSideMenuToggle}
+                aria-label="Abrir menú"
+              >
+                <Menu className="h-6 w-6" />
+              </button>
+            </div>
 
+            <div className="hidden lg:flex flex-col items-center justify-center ml-auto w-auto">
+              <div className="text-center text-white text-sm font-medium">
+                <span>
+                  POR COMPRAS SUPERIORES A $200.000
+                  <br />
+                  ENVÍO GRATIS EN BOGOTÁ
+                </span>
+              </div>
+
+              <nav className="hidden lg:flex items-center space-x-4">
+                {renderNavLinks()}
+              </nav>
+            </div>
+          </div>
+        </div>
+      </header>
 
       <div
         className={`fixed inset-0 z-50 transition-opacity duration-300 ${
@@ -207,7 +247,6 @@ export default function Header() {
           {renderNavLinks(true)}
         </nav>
       </div>
-
       <LoginModal isOpen={isLoginModalOpen} onClose={handleModalClose} />
     </>
   );
