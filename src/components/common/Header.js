@@ -186,12 +186,12 @@ export default function Header() {
         style={{ transition: "transform 0.6s ease-in-out" }}
       >
         <div className="w-full mx-auto px-4 sm:px-6 lg:px-8 bg-black">
-          <div className="flex items-center justify-between h-16 lg:h-28">
+          <div className="flex items-center justify-between h-20 lg:h-28">
             <div className="flex items-center lg:mr-auto w-full justify-between lg:justify-start">
               <Link to="/" onClick={() => handleLinkClick("")}>
                 <img
                   src={logo}
-                  alt="Logo de la tienda - Enlace a la página de inicio"  // Descripción clara
+                  alt="Logo de la tienda - Enlace a la página de inicio"
                   className="h-auto max-h-16 w-auto"
                   width="128"
                   height="48"

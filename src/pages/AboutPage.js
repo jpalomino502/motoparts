@@ -3,7 +3,7 @@ import { Users, Target, Zap, Award } from "lucide-react";
 
 export default function QuienesSomos() {
   return (
-    <div className="flex-grow px-4 py-4 sm:px-6 lg:py-20">
+    <div className="flex-grow px-4 py-8 sm:px-6 lg:py-16">
       <section className="relative h-96">
         <img
           src="/placeholder.svg?height=400&width=1200"

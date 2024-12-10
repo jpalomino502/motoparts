@@ -17,12 +17,10 @@ export default function App() {
 
   return (
     <CartProvider>
-
-    <Router>
-      <div className="min-h-screen flex flex-col">
-        <Header />
-        <main>
-          <div>
+      <Router>
+        <div className="min-h-screen flex flex-col">
+          <Header />
+          <main className="flex-grow">
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/products" element={<ProductPage />} />
@@ -32,11 +30,10 @@ export default function App() {
               <Route path="/contact" element={<ContactPage />} />
               <Route path="/about" element={<AboutPage />} />
             </Routes>
-          </div>
-        </main>
-        <Footer />
-      </div>
-    </Router>
+          </main>
+          <Footer />
+        </div>
+      </Router>
     </CartProvider>
   );
 }

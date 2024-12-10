@@ -95,7 +95,7 @@ const Profile = () => {
   );
 
   return (
-    <div className="bg-gray-100 flex lg:mt-11">
+    <div className="bg-white flex lg:mt-11 sm:mt-2">
       {/* Sidebar */}
 {/* Sidebar */}
 <aside
@@ -152,7 +152,7 @@ const Profile = () => {
           </button>
         </header>
 
-        <main className="flex-1 p-6">
+        <main className="flex-1 p-6 mt-2">
           {!userData ? (
             <SkeletonLoading />
           ) : (
