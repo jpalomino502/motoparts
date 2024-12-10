@@ -200,9 +200,11 @@ export default function Header() {
             </div>
 
             <div className="lg:hidden flex items-center ml-auto space-x-4">
-              <Link to="/cart" className="text-white" aria-label="Ir al carrito de compras">
-                <ShoppingCart className="h-6 w-6" />
-              </Link>
+              {user && (
+                <Link to="/cart" className="text-white" aria-label="Ir al carrito de compras">
+                  <ShoppingCart className="h-6 w-6" />
+                </Link>
+              )}
               <button
                 className="p-2 rounded-full text-white hover:text-white"
                 onClick={handleSideMenuToggle}
@@ -211,6 +213,7 @@ export default function Header() {
                 <Menu className="h-6 w-6" />
               </button>
             </div>
+
 
             <div className="hidden lg:flex flex-col items-center justify-center ml-auto w-auto">
               <div className="text-center text-white text-sm font-medium">

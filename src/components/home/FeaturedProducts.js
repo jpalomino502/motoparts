@@ -134,7 +134,7 @@ export default function ProductList() {
             onClick={(e) => {
               e.stopPropagation();
               if (!isLoading) {
-                handleAddToCart(product); // Llamamos a la función para añadir al carrito
+                handleAddToCart(product);
               }
             }}
             disabled={isLoading}

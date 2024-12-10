@@ -1,22 +1,57 @@
-import React from "react";
-import { useCart } from "../context/CartContext"; // Importa el contexto de carrito
-import CartItem from "../components/cart/CartItem"; // Componente de cada producto en el carrito
-import CartSummary from "../components/cart/CartSummary"; // Componente para resumen de carrito
+import React, { useState, useEffect } from "react";
+import { useCart } from "../context/CartContext";
+import CartItem from "../components/cart/CartItem";
+import CartSummary from "../components/cart/CartSummary";
 
 const CartPage = () => {
-  const { cart, removeFromCart } = useCart(); // Accede al carrito desde el contexto global
+  const { cart, fetchProductDetails } = useCart();
+  const [cartWithDetails, setCartWithDetails] = useState([]);
+  const [totalItems, setTotalItems] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(0);
 
-  // Calcula el total de artículos y el precio total
-  const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
-  const totalPrice = cart.reduce((acc, item) => acc + item.netPrice * item.quantity, 0);
+  useEffect(() => {
+    const loadCartDetails = async () => {
+      const detailedCart = await Promise.all(
+        cart.map(async (item) => {
+          if (!item.id) {
+            console.error("Producto sin ID:", item);
+            return null;
+          }
+
+          const details = await fetchProductDetails(item.id);
+          if (!details) {
+            return null;
+          }
+
+          return {
+            ...item,
+            ...details,
+          };
+        })
+      );
+
+      const filteredCart = detailedCart.filter(item => item !== null);
+
+      const totalItems = filteredCart.reduce((acc, item) => acc + item.quantity, 0);
+      const totalPrice = filteredCart.reduce((acc, item) => acc + item.netPrice * item.quantity, 0);
+
+      setCartWithDetails(filteredCart);
+      setTotalItems(totalItems);
+      setTotalPrice(totalPrice);
+    };
+
+    loadCartDetails();
+  }, [cart, fetchProductDetails]);
 
   const checkout = () => {
     alert("Procediendo al pago...");
   };
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      <header className="bg-white shadow py-6">
+    <div className='flex-grow px-4 py-4 sm:px-6 lg:py-10'>
+
+    <div className="min-h-screen">
+      <header className="bg-white py-6">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-3xl font-bold text-gray-900">Carrito de Compras</h1>
         </div>
@@ -24,18 +59,18 @@ const CartPage = () => {
 
       <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
         <div className="px-4 py-6 sm:px-0">
-          <div className="flex gap-6">
-            <div className="w-full md:w-3/4">
-              {cart.length === 0 ? (
+          <div className="flex flex-col lg:flex-row gap-6">
+            <div className="w-full lg:w-3/4">
+              {cartWithDetails.length === 0 ? (
                 <p className="text-lg text-gray-900">Tu carrito está vacío</p>
               ) : (
-                cart.map((item) => (
-                  <CartItem key={item.id} item={item} removeItem={removeFromCart} />
+                cartWithDetails.map((item) => (
+                  <CartItem key={item.id} item={item} />
                 ))
               )}
             </div>
 
-            <div className="w-full md:w-1/4">
+            <div className="w-full lg:w-1/4">
               <CartSummary
                 totalItems={totalItems}
                 totalPrice={totalPrice}
@@ -45,6 +80,7 @@ const CartPage = () => {
           </div>
         </div>
       </main>
+    </div>
     </div>
   );
 };

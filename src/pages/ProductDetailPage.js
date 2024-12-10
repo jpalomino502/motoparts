@@ -43,8 +43,6 @@ export default function ProductPage() {
     return <LoadingSkeleton />;
   }
 
-  const hasDiscount = product.discount && parseInt(product.discount) > 0;
-
   const formatPrice = (price) => {
     return `COP ${parseInt(price).toLocaleString("es-CO")}`;
   };

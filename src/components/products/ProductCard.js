@@ -215,7 +215,7 @@ export default function ProductList({ initialShowDiscounts = false }) {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-white">
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col lg:flex-row gap-8">  
         <aside className={`w-full lg:w-1/4 ${showFilters ? 'block' : 'hidden lg:block'}`}>

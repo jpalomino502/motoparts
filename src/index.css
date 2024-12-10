@@ -42,6 +42,6 @@ main {
 @media (max-width: 768px) {
   .active-link::after,
   .hover-link:hover::after {
-    bottom: -10px;
+    bottom: -2px;
   }
 }
