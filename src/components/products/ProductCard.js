@@ -306,7 +306,7 @@ export default function ProductList({ initialShowDiscounts = false }) {
         </div>
       )}
 
-      <ToastContainer />
+      <ToastContainer position="top-right" style={{ top: "120px" }} />
     </div>
   );
 }

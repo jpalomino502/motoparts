@@ -1,6 +1,6 @@
 import React from 'react';
 
-const CartSummary = ({ totalItems, totalPrice, checkout }) => {
+const CartSummary = ({ totalItems, totalPrice, checkout, isLoading, isEpaycoLoaded }) => {
   const formatPrice = (price) => {
     return new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(price);
   };
@@ -19,12 +19,13 @@ const CartSummary = ({ totalItems, totalPrice, checkout }) => {
       <button
         onClick={checkout}
         className="w-full bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700 transition-colors disabled:bg-gray-400"
-        disabled={totalItems === 0}
+        disabled={totalItems === 0 || !isEpaycoLoaded || isLoading}
       >
-        Proceder al Pago
+        {isEpaycoLoaded ? 'Proceder al Pago' : 'Cargando ePayco...'}
       </button>
     </div>
   );
 };
 
 export default CartSummary;
+

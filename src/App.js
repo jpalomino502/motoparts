@@ -7,6 +7,7 @@ import CartPage from './pages/CartPage';
 import ContactPage from './pages/ContactPage';
 import ProductDetailPage from './pages/ProductDetailPage';
 import AboutPage from './pages/AboutPage';
+import PaymentResponse from './pages/PaymentResponse';
 import Header from './components/common/Header';
 import Footer from './components/common/Footer';
 import { useAuth } from './context/AuthContext';
@@ -18,7 +19,7 @@ export default function App() {
   return (
     <CartProvider>
       <Router>
-        <div className="min-h-screen flex flex-col">
+        <div className="min-h-screen web bg-gray-100 flex flex-col">
           <Header />
           <main className="flex-grow">
             <Routes>
@@ -27,6 +28,7 @@ export default function App() {
               <Route path="/productdetail/:id" element={<ProductDetailPage />} /> 
               <Route path="/profile" element={user ? <ProfilePage /> : <Navigate to="/" />} />
               <Route path="/cart" element={<CartPage />} />
+              <Route path="/payment-response" element={<PaymentResponse />} />
               <Route path="/contact" element={<ContactPage />} />
               <Route path="/about" element={<AboutPage />} />
             </Routes>

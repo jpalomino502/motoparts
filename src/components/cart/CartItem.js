@@ -1,3 +1,4 @@
+// CartItem.js
 import React from 'react';
 import { useCart } from '../../context/CartContext';
 
@@ -58,4 +59,3 @@ const CartItem = ({ item }) => {
 };
 
 export default CartItem;
-

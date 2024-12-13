@@ -106,8 +106,8 @@ export default function HeroSection() {
                   className="w-full h-auto rounded-lg"
                   width="1920"
                   height="1080"
-                  loading={index === 0 ? 'eager' : 'lazy'}
-                  fetchpriority={index === 0 ? 'high' : 'auto'}
+                  loading={index === 0 ? 'eager' : 'lazy'} // Cargar la primera imagen de forma inmediata
+                  fetchpriority={index === 0 ? 'high' : 'auto'} // Priorizar la carga de la primera imagen
                 />
               </div>
             ))}

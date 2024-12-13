@@ -21,11 +21,10 @@ export default function Header() {
   const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
 
   useEffect(() => {
-    window.scrollTo(0, 0);
     const path = location.pathname;
     if (path.includes("products") || path.includes("productdetail")) {
       setActiveLink("productos");
-    } else if (path.includes("cart")) {
+    } else if (path === "/cart" || path.includes("cart")) {
       setActiveLink("carrito");
     } else if (path.includes("profile")) {
       setActiveLink("perfil");
@@ -41,13 +40,11 @@ export default function Header() {
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > lastScrollY && window.scrollY > scrollThreshold) {
-        // Scrolling down and has passed the scroll threshold
         setIsHeaderVisible(false);
       } else if (
         window.scrollY < lastScrollY ||
         window.scrollY <= scrollThreshold
       ) {
-        // Scrolling up or less than threshold
         setIsHeaderVisible(true);
       }
       setLastScrollY(window.scrollY);
@@ -142,7 +139,11 @@ export default function Header() {
             {!isMobile && (
               <Link
                 to="/cart"
-                className="relative text-white"
+                className={`relative text-white ${
+                  activeLink === "carrito"
+                    ? "px-3 py-2 text-sm font-medium flex items-center whitespace-nowrap active-link"
+                    : "px-3 py-2 text-sm font-medium flex items-center whitespace-nowrap hover:text-white hover-link"
+                }`}
                 aria-label="Ir al carrito de compras"
               >
                 <ShoppingCart className="h-5 w-5" aria-hidden="true" />

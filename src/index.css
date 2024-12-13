@@ -4,7 +4,6 @@
 
 * {
   font-family: "Roboto", sans-serif;
-  font-display: swap;
 }
 
 :root {
@@ -42,6 +41,18 @@ main {
 @media (max-width: 768px) {
   .active-link::after,
   .hover-link:hover::after {
+    bottom: -0.3rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .active-link::after,
+  .hover-link:hover::after {
     bottom: -0.5rem;
   }
+}
+
+/* SearchBar */
+.search {
+  text-align: center;
 }

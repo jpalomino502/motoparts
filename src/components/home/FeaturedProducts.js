@@ -2,15 +2,17 @@ import React, { useState, useEffect } from "react";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../firebase/firebase";
 import { useNavigate } from "react-router-dom";
-import { useCart } from '../../context/CartContext';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { useCart } from "../../context/CartContext";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function ProductList() {
   const [openDialog, setOpenDialog] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showFilters, setShowFilters] = useState(false);
+  const [visibleProductsCount, setVisibleProductsCount] = useState(12);
   const { addToCart } = useCart();
 
   const navigate = useNavigate();
@@ -79,12 +81,12 @@ export default function ProductList() {
               <div className="w-full h-full bg-gray-300 animate-pulse"></div>
             ) : (
               <img
-              src={product.thumbnail}
-              alt={product.title}
-              className="w-full h-full object-cover"
-              width="200" // Añadido
-              height="200" // Añadido
-            />
+                src={product.thumbnail}
+                alt={product.title}
+                className="w-full h-full object-cover"
+                width="200"
+                height="200"
+              />
             )}
           </div>
           <div>
@@ -105,10 +107,14 @@ export default function ProductList() {
                       <span className="text-gray-500 line-through">
                         {formatPrice(product.price)}
                       </span>
-                      <span className="text-xl font-bold">{formatPrice(salePrice)}</span>
+                      <span className="text-xl font-bold">
+                        {formatPrice(salePrice)}
+                      </span>
                     </>
                   ) : (
-                    <span className="text-xl font-bold">{formatPrice(salePrice)}</span>
+                    <span className="text-xl font-bold">
+                      {formatPrice(salePrice)}
+                    </span>
                   )}
                 </div>
               </>
@@ -146,12 +152,19 @@ export default function ProductList() {
     );
   };
 
+  const handleShowMore = () => {
+    setVisibleProductsCount(products.length);
+  };
+
   return (
     <div className="p-6">
       <h2 className="text-4xl sm:text-5xl font-bold text-center mb-8">
         <span className="text-red-600">LO MEJOR EN</span>
         <br />
-        <span className="text-white inline-block mt-2" style={{ WebkitTextStroke: "2px red" }}>
+        <span
+          className="text-white inline-block mt-2"
+          style={{ WebkitTextStroke: "2px red" }}
+        >
           FILTROS DE AIRE
         </span>
       </h2>
@@ -160,57 +173,30 @@ export default function ProductList() {
         {loading
           ? Array(8)
               .fill()
-              .map((_, index) => <ProductCard key={index} product={{}} isLoading={true} />)
-          : products.map((product) => (
-              <ProductCard key={product.id} product={product} isLoading={false} />
-            ))}
+              .map((_, index) => (
+                <ProductCard key={index} product={{}} isLoading={true} />
+              ))
+          : products
+              .slice(0, visibleProductsCount)
+              .map((product) => (
+                <ProductCard
+                  key={product.id}
+                  product={product}
+                  isLoading={false}
+                />
+              ))}
       </div>
 
-      {openDialog && selectedProduct && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50"
-          role="dialog"
-          aria-labelledby="dialog-title"
-          aria-modal="true"
+      {products.length > 12 && visibleProductsCount < products.length && (
+        <button
+          onClick={handleShowMore}
+          className="mt-6 w-full bg-white text-gray-800 py-2 px-4 rounded-md border border-gray-300 hover:bg-gray-50 transition-colors mb-4 sticky top-24 z-10"
         >
-          <div className="bg-white rounded-lg p-6 max-w-3xl w-full max-h-[90vh] overflow-auto">
-            <h2 id="dialog-title" className="text-xl font-bold mb-4">
-              Vehículos Compatibles - {selectedProduct.reference}
-            </h2>
-            <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Marca</th>
-                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Modelo</th>
-                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Año</th>
-                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tamaño Motor</th>
-                  </tr>
-                </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
-                  {Array.isArray(selectedProduct.compatibleVehicles) &&
-                    selectedProduct.compatibleVehicles.map((vehicle, index) => (
-                      <tr key={index} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{vehicle.brand}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{vehicle.model}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{vehicle.year}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{vehicle.engineSize}cc</td>
-                      </tr>
-                    ))}
-                </tbody>
-              </table>
-            </div>
-            <button
-              className="mt-6 w-full bg-red-600 text-white rounded py-2 hover:bg-red-700 transition-colors"
-              onClick={() => setOpenDialog(false)}
-            >
-              Cerrar
-            </button>
-          </div>
-        </div>
+          VER MÁS
+        </button>
       )}
 
-      <ToastContainer />
+      <ToastContainer position="top-right" style={{ top: "120px" }} />
     </div>
   );
 }

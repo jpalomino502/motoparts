@@ -10,6 +10,7 @@ const CartPage = () => {
   const [totalPrice, setTotalPrice] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [isInitialLoad, setIsInitialLoad] = useState(true);
+  const [isEpaycoLoaded, setIsEpaycoLoaded] = useState(false);
 
   useEffect(() => {
     const loadCartDetails = async () => {
@@ -54,8 +55,53 @@ const CartPage = () => {
     loadCartDetails();
   }, [cart, fetchProductDetails]);
 
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = 'https://checkout.epayco.co/checkout.js';
+    script.async = true;
+    script.onload = () => setIsEpaycoLoaded(true);
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
+
   const checkout = () => {
-    alert("Procediendo al pago...");
+    if (!isEpaycoLoaded) {
+      console.error('ePayco script not loaded yet');
+      return;
+    }
+  
+    const handler = window.ePayco.checkout.configure({
+      key: 'e3160bbc046326411a5622b094183a69',
+      test: true
+    });
+
+    const description = `Compra de ${totalItems} productos: ${cartWithDetails.map(item => `${item.title} (x${item.quantity})`).join(', ')}`;
+    const responseUrl = `${window.location.origin}/payment-response`;
+    const confirmationUrl = `${window.location.origin}/payment-response`;
+    const rejectedUrl = `${window.location.origin}/payment-response?cancelled=true`;
+    const cancelUrl = `${window.location.origin}/payment-response?cancelled=true`;
+
+    const data = {
+      name: 'Carrito de Compras',
+      description,
+      invoice: `${Date.now()}`,
+      currency: 'COP',
+      amount: totalPrice,
+      tax_base: '0',
+      tax: '0',
+      country: 'CO',
+      external: false,
+      response: responseUrl,
+      confirmation: confirmationUrl,
+      rejected: rejectedUrl,
+      cancel_url: cancelUrl,
+      methodsDisable: [],
+    };
+  
+    handler.open(data);
   };
 
   return (
@@ -88,6 +134,7 @@ const CartPage = () => {
                   totalPrice={totalPrice}
                   checkout={checkout}
                   isLoading={isLoading && isInitialLoad}
+                  isEpaycoLoaded={isEpaycoLoaded}
                 />
               </div>
             </div>
