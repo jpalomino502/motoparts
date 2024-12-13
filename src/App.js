@@ -19,7 +19,7 @@ export default function App() {
   return (
     <CartProvider>
       <Router>
-        <div className="min-h-screen web bg-gray-100 flex flex-col">
+        <div className="min-h-screen web flex flex-col">
           <Header />
           <main className="flex-grow">
             <Routes>

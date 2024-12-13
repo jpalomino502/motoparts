@@ -6,7 +6,7 @@ export default function QuienesSomos() {
     <div className="flex-grow px-4 py-8 sm:px-6 lg:py-16">
       <section className="relative h-96">
         <img
-          src="/placeholder.svg?height=400&width=1200"
+          src="https://via.placeholder.com/500"
           alt="Equipo de trabajo colaborando"
           className="w-full h-full object-cover"
         />
@@ -44,7 +44,7 @@ export default function QuienesSomos() {
           </div>
           <div className="order-first md:order-last">
             <img
-              src="/placeholder.svg?height=300&width=400"
+              src="https://via.placeholder.com/500"
               alt="Fundadores de la empresa"
               className="w-full h-auto rounded-lg shadow-lg"
             />
@@ -63,17 +63,17 @@ export default function QuienesSomos() {
               {
                 name: "Person",
                 role: "a",
-                image: "/placeholder.svg?height=200&width=200",
+                image: "https://via.placeholder.com/500",
               },
               {
                 name: "Person",
                 role: "a",
-                image: "/placeholder.svg?height=200&width=200",
+                image: "https://via.placeholder.com/500",
               },
               {
                 name: "Person",
                 role: "a",
-                image: "/placeholder.svg?height=200&width=200",
+                image: "https://via.placeholder.com/500",
               },
             ].map((member, index) => (
               <div

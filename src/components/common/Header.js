@@ -21,6 +21,10 @@ export default function Header() {
   const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location]);
+
+  useEffect(() => {
     const path = location.pathname;
     if (path.includes("products") || path.includes("productdetail")) {
       setActiveLink("productos");
