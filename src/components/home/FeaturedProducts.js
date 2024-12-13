@@ -7,11 +7,8 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function ProductList() {
-  const [openDialog, setOpenDialog] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState(null);
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState([]); // Removed unused state variables
   const [loading, setLoading] = useState(true);
-  const [showFilters, setShowFilters] = useState(false);
   const [visibleProductsCount, setVisibleProductsCount] = useState(12);
   const { addToCart } = useCart();
 
@@ -127,8 +124,7 @@ export default function ProductList() {
             onClick={(e) => {
               e.stopPropagation();
               if (!isLoading) {
-                setSelectedProduct(product);
-                setOpenDialog(true);
+                navigate(`/productdetail/${product.id}`);
               }
             }}
             disabled={isLoading}

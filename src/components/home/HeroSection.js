@@ -9,7 +9,6 @@ import 'slick-carousel/slick/slick-theme.css';
 export default function HeroSection() {
   const [heroImages, setHeroImages] = useState([]);
   const sliderRef = useRef(null);
-  const [imagesLoaded, setImagesLoaded] = useState(false);
   const [firstImageLoaded, setFirstImageLoaded] = useState(false);
 
   useEffect(() => {
@@ -27,14 +26,13 @@ export default function HeroSection() {
     fetchImages();
   }, []);
 
-  // Pre-cargar imágenes en segundo plano
   const preloadImages = (images) => {
     const promises = images.map((src, index) => {
       return new Promise((resolve) => {
         const img = new Image();
         img.src = src;
         img.onload = () => {
-          if (index === 0) setFirstImageLoaded(true); // Marca la primera imagen como cargada
+          if (index === 0) setFirstImageLoaded(true);
           resolve();
         };
         img.onerror = resolve;
@@ -42,18 +40,17 @@ export default function HeroSection() {
     });
 
     Promise.all(promises).then(() => {
-      setImagesLoaded(true);
+      setFirstImageLoaded(true);
     });
   };
 
-  // Añadir links de pre-carga para optimizar la carga
   const addPreloadLinks = (images) => {
     images.forEach((image, index) => {
       const link = document.createElement('link');
       link.rel = 'preload';
       link.href = image;
       link.as = 'image';
-      link.fetchpriority = index === 0 ? 'high' : 'auto'; // Prioriza la carga de la primera imagen
+      link.fetchpriority = index === 0 ? 'high' : 'auto'; 
       document.head.appendChild(link);
     });
   };
@@ -88,7 +85,6 @@ export default function HeroSection() {
     ],
   };
 
-  // Mostrar el cargador de imágenes hasta que la primera imagen esté cargada
   if (!firstImageLoaded) {
     return <SkeletonLoader />;
   }
@@ -102,12 +98,12 @@ export default function HeroSection() {
               <div key={index} className="relative w-full">
                 <img
                   src={image}
-                  alt={`Carousel image ${index + 1}`}
+                  alt={`Imagen del carrusel ${index + 1}`}
                   className="w-full h-auto rounded-lg"
                   width="1920"
                   height="1080"
-                  loading={index === 0 ? 'eager' : 'lazy'} // Cargar la primera imagen de forma inmediata
-                  fetchpriority={index === 0 ? 'high' : 'auto'} // Priorizar la carga de la primera imagen
+                  loading={index === 0 ? 'eager' : 'lazy'}
+                  fetchpriority={index === 0 ? 'high' : 'auto'}
                 />
               </div>
             ))}
