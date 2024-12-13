@@ -151,7 +151,7 @@ export default function ProductList() {
       <h2 className="text-4xl sm:text-5xl font-bold text-center mb-8">
         <span className="text-red-600">LO MEJOR EN</span>
         <br />
-        <span className="text-gray-800 inline-block mt-2">
+        <span className="text-white inline-block mt-2" style={{ WebkitTextStroke: "2px red" }}>
           FILTROS DE AIRE
         </span>
       </h2>

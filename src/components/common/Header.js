@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { ShoppingCart, Menu, User, Tag, Info, Phone, X } from "lucide-react";
+import { useCart } from "../../context/CartContext";
 import LoginModal from "./LoginModal";
 import { useAuth } from "../../hooks/useAuth";
 import { Link, useLocation } from "react-router-dom";
@@ -9,13 +10,15 @@ export default function Header() {
   const [isLoginModalOpen, setLoginModalOpen] = useState(false);
   const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
   const { user } = useAuth();
+  const { cart } = useCart();
   const [activeLink, setActiveLink] = useState("");
   const location = useLocation();
 
-  // State for tracking scroll direction
   const [isHeaderVisible, setIsHeaderVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
-  const scrollThreshold = 100; // Umbral de desplazamiento en píxeles para ocultar el encabezado
+  const scrollThreshold = 100;
+
+  const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -40,7 +43,10 @@ export default function Header() {
       if (window.scrollY > lastScrollY && window.scrollY > scrollThreshold) {
         // Scrolling down and has passed the scroll threshold
         setIsHeaderVisible(false);
-      } else if (window.scrollY < lastScrollY || window.scrollY <= scrollThreshold) {
+      } else if (
+        window.scrollY < lastScrollY ||
+        window.scrollY <= scrollThreshold
+      ) {
         // Scrolling up or less than threshold
         setIsHeaderVisible(true);
       }
@@ -85,7 +91,7 @@ export default function Header() {
     const linkClass = isMobile
       ? "block px-4 py-3 text-base font-medium w-full text-left mb-4"
       : "px-3 py-2 text-sm font-medium flex items-center whitespace-nowrap";
-  
+
     const links = [
       { to: "/products", icon: Tag, text: "Productos", name: "productos" },
       { to: "/about", icon: Info, text: "Quienes Somos", name: "about" },
@@ -108,7 +114,7 @@ export default function Header() {
           >
             <link.icon
               className={`${isMobile ? "h-5 w-5 mr-3 inline" : "h-4 w-4 mr-1"}`}
-              aria-hidden="true" 
+              aria-hidden="true"
             />
             {link.text}
           </Link>
@@ -123,32 +129,31 @@ export default function Header() {
                   : "text-white hover:text-white hover-link"
               }`}
               onClick={() => handleLinkClick("perfil")}
-              aria-label="Ir al perfil de usuario" 
+              aria-label="Ir al perfil de usuario"
             >
               <User
                 className={`${
                   isMobile ? "h-5 w-5 mr-3 inline" : "h-4 w-4 mr-1"
                 }`}
-                aria-hidden="true" 
+                aria-hidden="true"
               />
               Perfil
             </Link>
-            {!isMobile && ( // Renderiza el carrito solo si no es móvil
+            {!isMobile && (
               <Link
                 to="/cart"
-                className={`${linkClass} ${
-                  activeLink === "carrito"
-                    ? "active-link"
-                    : "text-white hover:text-white hover-link"
-                }`}
-                onClick={() => handleLinkClick("carrito")}
+                className="relative text-white"
                 aria-label="Ir al carrito de compras"
               >
-                <ShoppingCart
-                  className="h-5 w-5" // No necesita cambiar en escritorio
-                  aria-hidden="true"
-                />
-                {isMobile ? "Carrito" : ""}
+                <ShoppingCart className="h-5 w-5" aria-hidden="true" />
+                {totalItems > 0 && (
+                  <span
+                    className="absolute -top-2 -right-2 bg-red-600 text-white rounded-full text-xs w-5 h-5 flex items-center justify-center"
+                    aria-label={`Productos en el carrito: ${totalItems}`}
+                  >
+                    {totalItems}
+                  </span>
+                )}
               </Link>
             )}
           </>
@@ -201,8 +206,20 @@ export default function Header() {
 
             <div className="lg:hidden flex items-center ml-auto space-x-4">
               {user && (
-                <Link to="/cart" className="text-white" aria-label="Ir al carrito de compras">
-                  <ShoppingCart className="h-6 w-6" />
+                <Link
+                  to="/cart"
+                  className="relative text-white"
+                  aria-label="Ir al carrito de compras"
+                >
+                  <ShoppingCart className="h-5 w-5" aria-hidden="true" />
+                  {totalItems > 0 && (
+                    <span
+                      className="absolute -top-2 -right-2 bg-red-600 text-white rounded-full text-xs w-5 h-5 flex items-center justify-center"
+                      aria-label={`Productos en el carrito: ${totalItems}`}
+                    >
+                      {totalItems}
+                    </span>
+                  )}
                 </Link>
               )}
               <button
@@ -213,7 +230,6 @@ export default function Header() {
                 <Menu className="h-6 w-6" />
               </button>
             </div>
-
 
             <div className="hidden lg:flex flex-col items-center justify-center ml-auto w-auto">
               <div className="text-center text-white text-sm font-medium">
