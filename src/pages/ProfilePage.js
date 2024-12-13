@@ -95,7 +95,7 @@ const Profile = () => {
   );
 
   return (
-    <div className="bg-white flex lg:mt-11 sm:mt-2">
+    <div className="bg-white flex mt-6 lg:mt-11 sm:mt-2">
       {/* Sidebar */}
 {/* Sidebar */}
 <aside
