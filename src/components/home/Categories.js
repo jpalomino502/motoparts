@@ -8,7 +8,6 @@ export default function Categories({ categories }) {
             key={index}
             className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow p-4 text-center group"
             onClick={() => {
-              // Aquí puedes manejar la lógica para redirigir o realizar alguna acción
               console.log(`Navegando a la categoría: ${category}`);
             }}
             type="button"

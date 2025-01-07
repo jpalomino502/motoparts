@@ -7,7 +7,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function ProductList() {
-  const [products, setProducts] = useState([]); // Removed unused state variables
+  const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [visibleProductsCount, setVisibleProductsCount] = useState(12);
   const { addToCart } = useCart();
