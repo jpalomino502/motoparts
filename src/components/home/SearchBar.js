@@ -30,7 +30,6 @@ const FilterSearch = () => {
 
   const navigate = useNavigate();
 
-  // Handle responsiveness
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 1024);
