@@ -91,7 +91,6 @@ const FilterSearch = () => {
         }
       });
 
-      // References are not dependent on compatibleVehicles filtering
       if (
         (!selectedBrand ||
           product.compatibleVehicles.some((v) => v.brand === selectedBrand)) &&
