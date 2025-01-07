@@ -63,7 +63,6 @@ const FilterSearch = () => {
     fetchData();
   }, []);
 
-  // Filter dependent options dynamically
   useEffect(() => {
     if (!productData.length) return;
 
