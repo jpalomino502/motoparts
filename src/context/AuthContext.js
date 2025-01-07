@@ -47,7 +47,6 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem('user');
   };
 
-  // Agregamos la función para restablecer la contraseña
   const resetPassword = async (email) => {
     try {
       await sendPasswordResetEmail(auth, email);
