@@ -34,8 +34,8 @@ export default function FilterSidebar({
         selectedModels={selectedModels}
         setSelectedModels={setSelectedModels}
         engineSizes={engineSizes}
-        selectedEngineSizes={selectedEngineSizes}  // Se pasa el valor actual (no la función)
-        setSelectedEngineSizes={setSelectedEngineSizes}  // Se pasa la función para actualizar el estado
+        selectedEngineSizes={selectedEngineSizes} 
+        setSelectedEngineSizes={setSelectedEngineSizes} 
         years={years}
         selectedYears={selectedYears}
         setSelectedYears={setSelectedYears}
