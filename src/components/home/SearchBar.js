@@ -41,7 +41,6 @@ const FilterSearch = () => {
     };
   }, []);
 
-  // Fetch data from Firestore
   useEffect(() => {
     const fetchData = async () => {
       const querySnapshot = await getDocs(collection(db, "products"));
