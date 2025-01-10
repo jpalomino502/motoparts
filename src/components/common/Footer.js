@@ -42,7 +42,7 @@ export default function Footer() {
 
           <div className="flex gap-4">
             <a 
-              href="https://www.instagram.com" // Replace with actual Instagram URL
+              href="https://www.instagram.com"
               className="bg-red-600 p-2 rounded-full hover:bg-red-700 transition-colors"
               aria-label="Instagram"
             >
