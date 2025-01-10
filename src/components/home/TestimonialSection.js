@@ -22,7 +22,7 @@ const testimonials = [
     id: 3,
     name: "Luis Hernández",
     role: "Piloto de Motocross",
-    image: "https://via.placeholder.com/100x100.png?text=LH", // URL de la imagen con via.placeholder.com
+    image: "https://via.placeholder.com/100x100.png?text=LH",
     content: "La variedad de piezas para motos de competición es impresionante. MotoPartes es mi go-to para mantener mi moto en óptimas condiciones.",
     rating: 4
   }
