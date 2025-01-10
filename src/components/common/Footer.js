@@ -49,7 +49,7 @@ export default function Footer() {
               <Instagram className="w-6 h-6" />
             </a>
             <a 
-              href="https://www.facebook.com" // Replace with actual Facebook URL
+              href="https://www.facebook.com"
               className="bg-red-600 p-2 rounded-full hover:bg-red-700 transition-colors"
               aria-label="Facebook"
             >
