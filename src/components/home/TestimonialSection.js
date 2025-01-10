@@ -14,7 +14,7 @@ const testimonials = [
     id: 2,
     name: "Ana Martínez",
     role: "Mecánica Profesional",
-    image: "https://via.placeholder.com/100x100.png?text=AM", // URL de la imagen con via.placeholder.com
+    image: "https://via.placeholder.com/100x100.png?text=AM",
     content: "Como mecánica, valoro la calidad de los repuestos. MotoPartes siempre ofrece productos de primera calidad a precios competitivos.",
     rating: 5
   },
