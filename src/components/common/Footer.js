@@ -56,7 +56,7 @@ export default function Footer() {
               <Facebook className="w-6 h-6" />
             </a>
             <a 
-              href="https://www.tiktok.com" // Replace with actual TikTok URL
+              href="https://www.tiktok.com"
               className="bg-red-600 p-2 rounded-full hover:bg-red-700 transition-colors"
               aria-label="TikTok"
             >
