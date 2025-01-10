@@ -6,7 +6,7 @@ const testimonials = [
     id: 1,
     name: "Carlos Rodríguez",
     role: "Motociclista Entusiasta",
-    image: "https://via.placeholder.com/100x100.png?text=CR", // URL de la imagen con via.placeholder.com
+    image: "https://via.placeholder.com/100x100.png?text=CR",
     content: "MotoPartes ha sido mi tienda de confianza durante años. Siempre encuentro lo que necesito y el servicio al cliente es excepcional.",
     rating: 5
   },
