@@ -5,7 +5,6 @@ export default function Footer() {
   return (
     <footer className="bg-black text-white py-12 px-4">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
-        {/* Contacto Section */}
         <div className="space-y-4">
           <h2 className="text-2xl font-bold tracking-wider">CONTACTO</h2>
           <div className="space-y-2">
