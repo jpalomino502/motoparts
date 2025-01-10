@@ -24,8 +24,6 @@ export default function Footer() {
             </a>
           </div>
         </div>
-
-        {/* Productos Section */}
         <div className="space-y-4">
           <h2 className="text-2xl font-bold tracking-wider">PRODUCTOS</h2>
           <p className="text-lg leading-relaxed">
