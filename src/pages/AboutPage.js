@@ -52,7 +52,6 @@ export default function QuienesSomos() {
         </div>
       </section>
 
-      {/* Nuestro Equipo */}
       <section className="bg-[#ff0000] py-16 px-4">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl font-bold text-white mb-8 text-center">
