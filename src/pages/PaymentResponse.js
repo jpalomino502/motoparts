@@ -26,14 +26,13 @@ const PaymentResponse = () => {
           userId: currentUser.uid,
           transactionId: paymentData.x_id_invoice,
           transactionDate: new Date(paymentData.x_transaction_date),
-          // Verificamos si cartWithDetails existe y es un arreglo
           products: Array.isArray(paymentData.cartWithDetails) 
             ? paymentData.cartWithDetails.map(item => ({
                 title: item.title,
                 quantity: item.quantity,
                 price: item.netPrice,
               })) 
-            : [],  // Si no es un arreglo, asignamos un arreglo vacío
+            : [],
           totalAmount: paymentData.x_amount,
           paymentStatus: paymentData.x_transaction_state,
           transactionUrl: window.location.href,
